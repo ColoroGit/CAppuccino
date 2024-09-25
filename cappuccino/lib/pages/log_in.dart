@@ -44,7 +44,9 @@ class _LogInState extends State<LogIn> {
                             fillColor: Color.fromARGB(250, 236, 204, 180),
                             labelText: 'Username',
                             labelStyle: TextStyle(
-                                color: Color.fromARGB(250, 66, 25, 8))),
+                              color: Color.fromARGB(250, 66, 25, 8),
+                              fontFamily: 'Sitka',
+                            )),
                       ),
                       TextField(
                         obscureText: true,
@@ -53,7 +55,9 @@ class _LogInState extends State<LogIn> {
                             fillColor: Color.fromARGB(250, 236, 204, 180),
                             labelText: 'Password',
                             labelStyle: TextStyle(
-                                color: Color.fromARGB(250, 66, 25, 8))),
+                              color: Color.fromARGB(250, 66, 25, 8),
+                              fontFamily: 'Sitka',
+                            )),
                       ),
                     ],
                   ),
@@ -63,6 +67,9 @@ class _LogInState extends State<LogIn> {
             ElevatedButton(
                 style: const ButtonStyle(
                   fixedSize: WidgetStatePropertyAll(Size(125, 50)),
+                  elevation: WidgetStatePropertyAll(5),
+                  shadowColor:
+                      WidgetStatePropertyAll(Color.fromARGB(250, 66, 25, 8)),
                   backgroundColor:
                       WidgetStatePropertyAll(Color.fromARGB(250, 168, 93, 48)),
                   foregroundColor: WidgetStatePropertyAll(
