@@ -2,9 +2,7 @@
 
 ## Descripción de la app
 
-A través de LIRCAYHUB se solicitó crear una aplicación donde se pueda obtener una alta variedad de recetas para preparar distintos tipos de cafés, con el objetivo de que los usuarios puedan aprender en base a sus preferencias, descubrir nuevas técnicas y compartir sus conocimientos. Esta maqueta funcional cuenta con las pantallas navegables básicas que requeríria esta apliacción, las cuales son: Una pantalla de carga o splash screen, una pantalla de log in, un menú principal donde se hace el display de las recetas que el usuario podría revisar, una pantalla donde se pueda revisar una receta en sí, y una pantalla para poder ver y gestionar la cuenta del usuario.
-
-~~Además cuenta con funcionalidades básicas como poder guardar recetas en una lista de favoritos, calificar y dejar comentarios en las recetas y poder crear una receta de café propia.~~
+A través de LIRCAYHUB se solicitó crear una aplicación donde se pueda obtener una alta variedad de recetas para preparar distintos tipos de cafés, con el objetivo de que los usuarios puedan aprender en base a sus preferencias, descubrir nuevas técnicas y compartir sus conocimientos. Esta maqueta funcional cuenta con las pantallas navegables básicas que requeríria esta apliacción, las cuales son: Una pantalla de carga o splash screen, una pantalla de log in, un menú principal donde se hace el display de las recetas que el usuario podría revisar, una pantalla donde se pueda revisar una receta en sí, y una pantalla para poder ver y gestionar la cuenta del usuario, entre otras pantallas que aportan al contexto.
 
 ## Requerimientos de la Aplicación
 
@@ -22,11 +20,25 @@ A través de LIRCAYHUB se solicitó crear una aplicación donde se pueda obtener
 
 ## Diagrama de Clases
 
-Link al diagrama: https://drive.google.com/file/d/1bC-KZ4V6XI0nVxR4v6mzXlnPy71Nra-T/view?usp=sharing
+Link al diagrama: https://drive.google.com/file/d/1bC-KZ4V6XI0nVxR4v6mzXlnPy71Nra-T/view?usp=drive_link
+*Está desactualizado*
 
 ## Wireflow
 
+Pantallas:
+- Splash (espacio para el logo, barra de carga)
+- Log in (Falso usuario y contraseña, se debe ingresar cualquier cosa en usuario y en contraseña para luego apretar ingresar y directo al menú principal)
+- Menú (con listado de recetas, botones para Home, buscador y perfil, navbar con ajustes y logout)
+- Ajustes (cosas básicas, lenguaje, modo nocturno y notificaciones)
+- Perfil (Info del perfil, lista de favoritos, escuelas de café y amigos)
+    - Favoritos: listado de recetas favoritas, mostradas igual que en home
+    - Escuelas de café: escuelas de café siguiendo
+    - Amigos: aún no available
+- Receta en sí (info de la receta, todo lo del UML)
+- Escuela de café (nombre, descripción y listado de recetas adscritas, mostradas como en la búsqueda)
+- Buscador (Buscar recetas, usuarios o escuelas de café, filtrar por lo mismo, pero por ahora solo tiene una barra de buscar y aparecen solo recetas)
 
+**Revisar imagen adjunta CAppuccino_Wireflow.jpg**
 
 ## Funcionalidades de la Maqueta
 
