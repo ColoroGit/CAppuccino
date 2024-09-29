@@ -3,13 +3,26 @@ import 'package:cappuccino/models/recepie.dart';
 import 'package:cappuccino/pages/browse.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/log_in.dart';
+import 'package:cappuccino/pages/profile_coffee_schools.dart';
 import 'package:cappuccino/pages/profile_favorites.dart';
+import 'package:cappuccino/pages/settings.dart';
 import 'package:flutter/material.dart';
-// import 'home.dart';
 
-class Settings extends StatelessWidget {
-  const Settings(
+class ProfileFriends extends StatefulWidget {
+  const ProfileFriends(
       {super.key, required this.recepies, required this.coffeeSchools});
+
+  final List<Recepie> recepies;
+  final List<CoffeeSchool> coffeeSchools;
+
+  @override
+  State<StatefulWidget> createState() =>
+      // ignore: no_logic_in_create_state
+      _ProfileFriendsState(recepies: recepies, coffeeSchools: coffeeSchools);
+}
+
+class _ProfileFriendsState extends State<ProfileFriends> {
+  _ProfileFriendsState({required this.recepies, required this.coffeeSchools});
 
   final List<Recepie> recepies;
   final List<CoffeeSchool> coffeeSchools;
@@ -104,118 +117,143 @@ class Settings extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Settings',
-              style: TextStyle(
-                  fontSize: 28, color: Color.fromARGB(250, 66, 25, 8)),
-            ),
-            SizedBox(
-              width: 325,
+            Container(
               height: 200,
-              child: Container(
-                margin: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25),
-                  ),
-                  color: Color.fromARGB(255, 206, 140, 92),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 206, 140, 92),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 300,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.account_circle_rounded,
+                            size: 100,
+                            color: Color.fromARGB(250, 66, 25, 8),
+                          ),
+                          title: Text(
+                            'Username',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Color.fromARGB(250, 66, 25, 8),
+                            ),
+                          ),
+                          subtitle: Text(
+                            'age: XX',
+                            style: TextStyle(
+                              color: Color.fromARGB(250, 66, 25, 8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.edit_square,
+                              color: Color.fromARGB(250, 66, 25, 8),
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'language',
-                            style: TextStyle(
-                              color: Color.fromARGB(250, 66, 25, 8),
-                              fontFamily: 'Sitka',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          MaterialButton(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                bottomRight: Radius.circular(25),
-                              ),
-                            ),
-                            onPressed: () {},
-                            color: const Color.fromARGB(250, 168, 93, 48),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'English',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(250, 236, 204, 180),
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Color.fromARGB(250, 236, 204, 180),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileFavorites(
+                                        recepies: recepies,
+                                        coffeeSchools: coffeeSchools,
+                                      )));
+                        },
+                        icon: Image.asset(
+                          'assets/images/Selected_Heart.png',
+                          height: 35,
+                        ),
                       ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'night mode',
-                            style: TextStyle(
-                              color: Color.fromARGB(250, 66, 25, 8),
-                              fontFamily: 'Sitka',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Switch(
-                            value: false,
-                            onChanged: null,
-                            inactiveTrackColor: Color.fromARGB(250, 66, 25, 8),
-                            inactiveThumbColor:
-                                Color.fromARGB(250, 236, 204, 180),
-                          ),
-                        ],
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileCoffeeSchools(
+                                        recepies: recepies,
+                                        coffeeSchools: coffeeSchools,
+                                      )));
+                        },
+                        icon: Image.asset(
+                          'assets/images/CoffeeSchool.png',
+                          height: 35,
+                        ),
                       ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'notifications',
-                            style: TextStyle(
-                              color: Color.fromARGB(250, 66, 25, 8),
-                              fontFamily: 'Sitka',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Switch(
-                            value: true,
-                            onChanged: null,
-                            activeTrackColor:
-                                Color.fromARGB(250, 236, 204, 180),
-                            thumbColor: WidgetStatePropertyAll(
-                                Color.fromARGB(250, 66, 25, 8)),
-                          )
-                        ],
-                      )
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.people_rounded,
+                          size: 40,
+                          color: Color.fromARGB(250, 236, 204, 180),
+                        ),
+                      ),
                     ],
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 490,
+              width: 400,
+              child: Center(
+                child: Text(
+                  'This Feature isnt available yet',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Color.fromARGB(250, 66, 25, 8),
                   ),
                 ),
               ),
-            ),
+            )
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: const Color.fromARGB(250, 168, 93, 48),
+        child: const Icon(
+          Icons.add,
+          size: 50,
+          color: Color.fromARGB(250, 236, 204, 180),
         ),
       ),
       persistentFooterButtons: [
@@ -231,16 +269,16 @@ class Settings extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home()));
-                },
                 icon: const Icon(
                   Icons.home_filled,
                   color: Color.fromARGB(250, 66, 25, 8),
                   size: 40,
                 ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home()));
+                },
               ),
               IconButton(
                 onPressed: () {
@@ -259,19 +297,11 @@ class Settings extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileFavorites(
-                                recepies: recepies,
-                                coffeeSchools: coffeeSchools,
-                              )));
-                },
+                onPressed: () {},
                 icon: const Icon(
                   Icons.account_circle,
-                  color: Color.fromARGB(250, 66, 25, 8),
+                  // size: 50,
+                  color: Color.fromARGB(250, 236, 204, 180),
                   size: 40,
                 ),
               ),

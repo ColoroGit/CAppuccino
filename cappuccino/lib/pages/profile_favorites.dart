@@ -1,170 +1,34 @@
 import 'package:cappuccino/models/coffee_school.dart';
-import 'package:cappuccino/models/comment.dart';
-import 'package:cappuccino/models/product.dart';
 import 'package:cappuccino/models/recepie.dart';
-import 'package:cappuccino/models/user.dart';
 import 'package:cappuccino/pages/browse.dart';
+import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/log_in.dart';
-import 'package:cappuccino/pages/profile_favorites.dart';
+import 'package:cappuccino/pages/profile_coffee_schools.dart';
+import 'package:cappuccino/pages/profile_friends.dart';
 import 'package:cappuccino/pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:lorem_ipsum/lorem_ipsum.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class ProfileFavorites extends StatefulWidget {
+  const ProfileFavorites(
+      {super.key, required this.recepies, required this.coffeeSchools});
+
+  final List<Recepie> recepies;
+  final List<CoffeeSchool> coffeeSchools;
 
   @override
-  State<Home> createState() => _HomeState();
+  State<StatefulWidget> createState() =>
+      // ignore: no_logic_in_create_state
+      _ProfileFavoritesState(recepies: recepies, coffeeSchools: coffeeSchools);
 }
 
-class _HomeState extends State<Home> {
-  User user1 = User(id: 1, name: 'Alonso', password: '1234', age: 22);
-  User user2 = User(id: 2, name: 'Fernanda', password: 'aaaa', age: 21);
-  User user3 = User(id: 3, name: 'Tomás', password: 'wxyz', age: 21);
+class _ProfileFavoritesState extends State<ProfileFavorites> {
+  _ProfileFavoritesState({required this.recepies, required this.coffeeSchools});
 
-  final List<User> users = <User>[];
-
-  Recepie recepie1 = Recepie(
-    id: 1,
-    caption: 'assets/images/Latte.png',
-    title: "Latte",
-    like: true,
-    rating: 4.6,
-    timeOfPrep: 3,
-    servings: 1,
-    details: loremIpsum(words: 7),
-    steps: <String>[
-      loremIpsum(words: 15),
-      loremIpsum(words: 15),
-    ],
-    dateOfCreation: DateTime(2024, 8, 9),
-  );
-
-  Recepie recepie2 = Recepie(
-    id: 2,
-    caption: 'assets/images/Macchiato.png',
-    title: "Macchiato",
-    like: true,
-    rating: 4.2,
-    timeOfPrep: 5,
-    servings: 1,
-    details: loremIpsum(words: 8),
-    steps: <String>[
-      loremIpsum(words: 10),
-      loremIpsum(words: 15),
-      loremIpsum(words: 7),
-    ],
-    dateOfCreation: DateTime(2022, 5, 12),
-  );
-
-  Recepie recepie3 = Recepie(
-    id: 3,
-    caption: 'assets/images/Cappuccino.png',
-    title: "Cappuccino",
-    like: false,
-    rating: 4.8,
-    timeOfPrep: 8,
-    servings: 1,
-    details: loremIpsum(words: 15),
-    steps: <String>[
-      loremIpsum(words: 10),
-      loremIpsum(words: 7),
-    ],
-    dateOfCreation: DateTime(2024, 9, 5),
-  );
-
-  Recepie recepie4 = Recepie(
-    id: 4,
-    caption: 'assets/images/Flat_White.png',
-    title: "Flat White",
-    like: true,
-    rating: 5.0,
-    timeOfPrep: 12,
-    servings: 1,
-    details: loremIpsum(words: 11),
-    steps: <String>[
-      loremIpsum(words: 12),
-      loremIpsum(words: 8),
-      loremIpsum(words: 7),
-      loremIpsum(words: 3),
-    ],
-    dateOfCreation: DateTime(2020, 2, 20),
-  );
-
-  Recepie recepie5 = Recepie(
-    id: 5,
-    caption: 'assets/images/Mocha.png',
-    title: "Mocha",
-    like: false,
-    rating: 3.8,
-    timeOfPrep: 5,
-    servings: 2,
-    details: loremIpsum(words: 10),
-    steps: <String>[
-      loremIpsum(words: 10),
-      loremIpsum(words: 8),
-    ],
-    dateOfCreation: DateTime(2023, 12, 21),
-  );
-
-  final recepies = <Recepie>[];
-
-  CoffeeSchool cs1 = CoffeeSchool(
-    id: 1,
-    name: 'Milk',
-    caption: 'assets/images/Milk.png',
-    like: true,
-    description: loremIpsum(words: 10),
-  );
-
-  CoffeeSchool cs2 = CoffeeSchool(
-    id: 2,
-    name: 'Blender',
-    caption: 'assets/images/Logo.png',
-    like: false,
-    description: loremIpsum(words: 12),
-  );
-
-  CoffeeSchool cs3 = CoffeeSchool(
-    id: 3,
-    name: 'Cocoa',
-    caption: 'assets/images/Cocoa.png',
-    like: true,
-    description: loremIpsum(words: 8),
-  );
-
-  final coffeeSchools = <CoffeeSchool>[];
-
-  Comment comment1 = Comment(
-    id: 1,
-    text: loremIpsum(words: 15),
-  );
-
-  Comment comment2 = Comment(
-    id: 2,
-    text: loremIpsum(words: 10),
-  );
-
-  Comment comment3 = Comment(
-    id: 3,
-    text: loremIpsum(words: 12),
-  );
-
-  final List<Comment> comments = <Comment>[];
-
-  Product p1 = Product(id: 1, name: 'Milk');
-  Product p2 = Product(id: 2, name: 'Cocoa Powder');
-  Product p3 = Product(id: 3, name: 'Coffee Machine');
-  Product p4 = Product(id: 4, name: 'Ground Espresso');
-
-  final List<Product> products = <Product>[];
-
-  bool initailized = false;
+  final List<Recepie> recepies;
+  final List<CoffeeSchool> coffeeSchools;
 
   @override
   Widget build(BuildContext context) {
-    initializeClasses();
-
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 75,
@@ -252,7 +116,138 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Center(
-        child: ListView(children: getRecepiesBanners()),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: 200,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 206, 140, 92),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 300,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.account_circle_rounded,
+                            size: 100,
+                            color: Color.fromARGB(250, 66, 25, 8),
+                          ),
+                          title: Text(
+                            'Username',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Color.fromARGB(250, 66, 25, 8),
+                            ),
+                          ),
+                          subtitle: Text(
+                            'age: XX',
+                            style: TextStyle(
+                              color: Color.fromARGB(250, 66, 25, 8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.edit_square,
+                              color: Color.fromARGB(250, 66, 25, 8),
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Image.asset(
+                          'assets/images/Heart.png',
+                          height: 35,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileCoffeeSchools(
+                                        recepies: recepies,
+                                        coffeeSchools: coffeeSchools,
+                                      )));
+                        },
+                        icon: Image.asset(
+                          'assets/images/CoffeeSchool.png',
+                          height: 35,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileFriends(
+                                        recepies: recepies,
+                                        coffeeSchools: coffeeSchools,
+                                      )));
+                        },
+                        icon: const Icon(
+                          Icons.people_rounded,
+                          color: Color.fromARGB(250, 66, 25, 8),
+                          size: 40,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 490,
+              width: 400,
+              child: ListView(
+                children: getLikedRecepieBanners(),
+              ),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: const Color.fromARGB(250, 168, 93, 48),
+        child: const Icon(
+          Icons.add,
+          size: 50,
+          color: Color.fromARGB(250, 236, 204, 180),
+        ),
       ),
       persistentFooterButtons: [
         Container(
@@ -269,10 +264,14 @@ class _HomeState extends State<Home> {
               IconButton(
                 icon: const Icon(
                   Icons.home_filled,
-                  color: Color.fromARGB(250, 236, 204, 180),
+                  color: Color.fromARGB(250, 66, 25, 8),
                   size: 40,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home()));
+                },
               ),
               IconButton(
                 onPressed: () {
@@ -291,19 +290,10 @@ class _HomeState extends State<Home> {
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileFavorites(
-                                recepies: recepies,
-                                coffeeSchools: coffeeSchools,
-                              )));
-                },
+                onPressed: () {},
                 icon: const Icon(
                   Icons.account_circle,
-                  color: Color.fromARGB(250, 66, 25, 8),
+                  color: Color.fromARGB(250, 236, 204, 180),
                   size: 40,
                 ),
               ),
@@ -314,69 +304,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void initializeClasses() {
-    if (!initailized) {
-      users.add(user1);
-      users.add(user2);
-      users.add(user3);
-
-      recepies.add(recepie1);
-      recepies.add(recepie2);
-      recepies.add(recepie3);
-      recepies.add(recepie4);
-      recepies.add(recepie5);
-
-      coffeeSchools.add(cs1);
-      coffeeSchools.add(cs2);
-      coffeeSchools.add(cs3);
-
-      comments.add(comment1);
-      comments.add(comment2);
-      comments.add(comment3);
-
-      products.add(p1);
-      products.add(p2);
-      products.add(p3);
-      products.add(p4);
-
-      recepie1.creator = user1;
-      recepie2.creator = user2;
-      recepie3.creator = user3;
-      recepie4.creator = user3;
-      recepie5.creator = user2;
-
-      comment1.owner = user1;
-      comment2.owner = user2;
-      comment3.owner = user3;
-
-      for (int i = 0; i < recepies.length; i++) {
-        for (int j = 0; j < products.length; j++) {
-          recepies[i].productsNeeded.add(products[j]);
-        }
-        for (int k = 0; k < comments.length; k++) {
-          if (recepies[i].creator.name != comments[k].owner.name) {
-            recepies[i].comments.add(comments[k]);
-          }
-        }
-        for (int l = 0; l < coffeeSchools.length; l++) {
-          recepies[i].coffeeSchools.add(coffeeSchools[l]);
-        }
-      }
-
-      for (int i = 0; i < coffeeSchools.length; i++) {
-        for (int j = 0; j < recepies.length; j++) {
-          coffeeSchools[i].lessons.add(recepies[j]);
-        }
-      }
-
-      initailized = true;
-    }
-  }
-
-  getRecepiesBanners() {
+  getLikedRecepieBanners() {
     final banners = <Widget>[];
 
     for (int i = 0; i < recepies.length; i++) {
+      if (!recepies[i].like) continue;
+
       banners.add(
         TextButton(
           onPressed: () => showDialog<String>(
@@ -488,7 +421,38 @@ class _HomeState extends State<Home> {
                             color: Color.fromARGB(250, 66, 25, 8),
                           ),
                         ),
-                        ListBody(children: getProductsNeeded(recepies[i])),
+                        const ListBody(
+                          children: [
+                            Text(
+                              '- 18g ground espresso',
+                              style: TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            Text(
+                              '- 150ml Milk',
+                              style: TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            Text(
+                              '- Coffee Machine',
+                              style: TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            Text(
+                              '- Cocoa Powder',
+                              style: TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(
                           height: 5,
                         ),
@@ -725,24 +689,6 @@ class _HomeState extends State<Home> {
     }
 
     return schools;
-  }
-
-  getProductsNeeded(Recepie r) {
-    final products = <Widget>[];
-
-    for (int i = 0; i < r.productsNeeded.length; i++) {
-      products.add(
-        Text(
-          ' - ${r.productsNeeded[i].name}',
-          style: const TextStyle(
-            color: Color.fromARGB(250, 66, 25, 8),
-            fontFamily: 'Sitka',
-          ),
-        ),
-      );
-    }
-
-    return products;
   }
 
   getSteps(Recepie r) {

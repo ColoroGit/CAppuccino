@@ -16,9 +16,10 @@ class _LogInState extends State<LogIn> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'LOG IN',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: TextStyle(
+                  fontSize: 28, color: Color.fromARGB(250, 66, 25, 8)),
             ),
             SizedBox(
               width: 375,
@@ -40,24 +41,28 @@ class _LogInState extends State<LogIn> {
                       TextField(
                         obscureText: false,
                         decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromARGB(250, 236, 204, 180),
-                            labelText: 'Username',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(250, 66, 25, 8),
-                              fontFamily: 'Sitka',
-                            )),
+                          filled: true,
+                          fillColor: Color.fromARGB(250, 236, 204, 180),
+                          labelText: 'Username',
+                          labelStyle: TextStyle(
+                            color: Color.fromARGB(250, 66, 25, 8),
+                            fontFamily: 'Sitka',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       TextField(
                         obscureText: true,
                         decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromARGB(250, 236, 204, 180),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(250, 66, 25, 8),
-                              fontFamily: 'Sitka',
-                            )),
+                          filled: true,
+                          fillColor: Color.fromARGB(250, 236, 204, 180),
+                          labelText: 'Password',
+                          labelStyle: TextStyle(
+                            color: Color.fromARGB(250, 66, 25, 8),
+                            fontFamily: 'Sitka',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -76,6 +81,7 @@ class _LogInState extends State<LogIn> {
                       Color.fromARGB(250, 236, 204, 180)),
                 ),
                 onPressed: () {
+                  Navigator.pop(context);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Home()));
                 },

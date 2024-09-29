@@ -13,6 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.1
   lorem_ipsum: any
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,14 @@ flutter:
    - assets\images\Latte.png
    - assets\images\Macchiato.png
    - assets\images\Mocha.png
+   - assets\images\Milk.png
+   - assets\images\Cocoa.png
+   - assets\images\Heart.png
+   - assets\images\Selected_Heart.png
+   - assets\images\Search.png
+   - assets\images\Selected_Search.png
+   - assets\images\CoffeeSchool.png
+   - assets\images\Selected_CoffeeSchool.png
 
   fonts: 
    - family: Lucida
