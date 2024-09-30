@@ -421,38 +421,7 @@ class _ProfileFavoritesState extends State<ProfileFavorites> {
                             color: Color.fromARGB(250, 66, 25, 8),
                           ),
                         ),
-                        const ListBody(
-                          children: [
-                            Text(
-                              '- 18g ground espresso',
-                              style: TextStyle(
-                                color: Color.fromARGB(250, 66, 25, 8),
-                                fontFamily: 'Sitka',
-                              ),
-                            ),
-                            Text(
-                              '- 150ml Milk',
-                              style: TextStyle(
-                                color: Color.fromARGB(250, 66, 25, 8),
-                                fontFamily: 'Sitka',
-                              ),
-                            ),
-                            Text(
-                              '- Coffee Machine',
-                              style: TextStyle(
-                                color: Color.fromARGB(250, 66, 25, 8),
-                                fontFamily: 'Sitka',
-                              ),
-                            ),
-                            Text(
-                              '- Cocoa Powder',
-                              style: TextStyle(
-                                color: Color.fromARGB(250, 66, 25, 8),
-                                fontFamily: 'Sitka',
-                              ),
-                            ),
-                          ],
-                        ),
+                        ListBody(children: getProductsNeeded(recepies[i])),
                         const SizedBox(
                           height: 5,
                         ),
@@ -689,6 +658,24 @@ class _ProfileFavoritesState extends State<ProfileFavorites> {
     }
 
     return schools;
+  }
+
+  getProductsNeeded(Recepie r) {
+    final products = <Widget>[];
+
+    for (int i = 0; i < r.productsNeeded.length; i++) {
+      products.add(
+        Text(
+          ' - ${r.productsNeeded[i].name}',
+          style: const TextStyle(
+            color: Color.fromARGB(250, 66, 25, 8),
+            fontFamily: 'Sitka',
+          ),
+        ),
+      );
+    }
+
+    return products;
   }
 
   getSteps(Recepie r) {

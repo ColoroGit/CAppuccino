@@ -374,6 +374,7 @@ class _ProfileCoffeeSchoolsState extends State<ProfileCoffeeSchools> {
                           coffeeSchools[i].description,
                           style: const TextStyle(
                             color: Color.fromARGB(250, 66, 25, 8),
+                            fontFamily: 'Sitka',
                           ),
                         ),
                         const SizedBox(height: 5),
