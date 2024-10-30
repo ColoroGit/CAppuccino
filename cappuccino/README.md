@@ -2,6 +2,45 @@
 
 Proyecto creado por Tomás Concha
 
+# Prototipo Funcional (versión 2.0)
+
+## Descripción de la app
+
+A través de LIRCAYHUB se solicitó crear una aplicación donde se pueda obtener una alta variedad de recetas para preparar distintos tipos de cafés, con el objetivo de que los usuarios puedan aprender en base a sus preferencias, descubrir nuevas técnicas y compartir sus conocimientos. En esta actualización de la aplicación, se tomó en cuenta el feedback de ciertos usuarios con el fin de realizar cambios para satisfacer sus necesidades, y aprovechar la instancia para agregar nuevas funcionalidades sobre la maqueta realizada durante la versión anterior. 
+
+## Requerimientos de la Aplicación
+
+1. El usuario puede ver recetas de café predefinidas dentro de la aplicación, para explorar nuevas recetas que puedan ser de su interés.
+2. El usuario puede crear nuevas recetas en base a las predefinidas, y modificar su información como desee, para poder dejar registro de sus propios resultados probando la receta.
+3. El usuario puede crear una receta desde 0, rellenando los distintos apartados de la misma como desee, para dejar registro de sus propias preparaciones.
+4. El sistema debe mantener un registro persistente de las recetas del usuario, con el objetivo de que siempre estén ahí, incluso cuando cierre la aplicación.
+5. El usuario puede revisar sus recetas creadas en un apartado especial, con el fin de poder accederlas cuando desee.
+6. El usuario puede editar sus recetas creadas cuando desee, para mantenerlas al día con sus conocimientos.
+7. El usuario puede eliminar sus recetas creadas, en caso de que ya no la necesite, o quiera mantener un órden en su aplicación.
+8. El usuario tendrá un apartado distinto donde se mostrarán las últimas recetas que haya accedido, con el fin de tener un acceso más rápido a las mismas.
+9. El usuario puede aumentar la cantidad de veces que ha preparado una receta en específico, dejando así un registro de sus acciones.
+10. El usuario puede tomar fotos a sus preparaciones y dejarlas guardadas en sus recetas creadas, para poder tener una referencia visual de sus hazañas.
+11. El usuario puede compartir sus recetas creadas a través de varias plataformas de mensajería, con el objetivo de facilitar la distribución de sus preparaciones con sus seres cercanos.
+12. El usuario puede realizar una valoración de la aplicación a través de un apartado destinado a ello, dejando así un feedback y mértricas importantes para los desarrolladores.
+
+## Diagrama de Información
+
+Link al diagrama: https://drive.google.com/file/d/1CZzxIMzSEZ1kKaDLUPMSnsGBdW2I07lU/view?usp=sharing
+
+## Diagrama de Flujo - Cómo crear una receta
+
+Link al diagrama: https://drive.google.com/file/d/1M5EL8LI-lMLWUZCiubrwUtMhGWpzN_Ps/view?usp=sharing
+
+## Link al Video Explicativo
+
+A continuación, se adjunta un video grabado por Tomás Concha, que explica a grandes rasgos las funcionalidades de la aplicación, junto con mostrar las mismas en acción, y otros detalles sobre el desarrollo.
+
+Link al video: 
+
+
+
+# Maqueta Funcional (versión 1.0)
+
 ## Descripción de la app
 
 A través de LIRCAYHUB se solicitó crear una aplicación donde se pueda obtener una alta variedad de recetas para preparar distintos tipos de cafés, con el objetivo de que los usuarios puedan aprender en base a sus preferencias, descubrir nuevas técnicas y compartir sus conocimientos. Esta maqueta funcional cuenta con las pantallas navegables básicas que requeríria esta apliacción, las cuales son: Una pantalla de carga o splash screen, una pantalla de log in, un menú principal donde se hace el display de las recetas que el usuario podría revisar, una pantalla donde se pueda revisar una receta en sí, y una pantalla para poder ver y gestionar la cuenta del usuario, entre otras pantallas que aportan al contexto.
