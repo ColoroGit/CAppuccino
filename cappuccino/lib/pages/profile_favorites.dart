@@ -663,10 +663,10 @@ class _ProfileFavoritesState extends State<ProfileFavorites> {
   getProductsNeeded(Recepie r) {
     final products = <Widget>[];
 
-    for (int i = 0; i < r.productsNeeded.length; i++) {
+    for (int i = 0; i < r.products.length; i++) {
       products.add(
         Text(
-          ' - ${r.productsNeeded[i].name}',
+          ' - ${r.products[i].name}',
           style: const TextStyle(
             color: Color.fromARGB(250, 66, 25, 8),
             fontFamily: 'Sitka',

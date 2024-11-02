@@ -1,7 +1,8 @@
+import 'package:cappuccino/pages/home.dart';
 import 'package:flutter/material.dart';
-import 'pages/log_in.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Lucida',
       ),
-      home: const LogIn(),
+      home: const Home(),
     );
   }
 }
