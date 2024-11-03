@@ -143,6 +143,7 @@ class _HomeState extends State<Home> {
     final banners = <Widget>[];
 
     for (int i = 0; i < recepies.length; i++) {
+      // Conectar DIRECTAMENTE con base de datos (Sin Provider)
       banners.add(
         TextButton(
           onPressed: () => showDialog<String>(
@@ -235,7 +236,8 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             Row(
-                              children: getShcools(recepies[i]),
+                              children:
+                                  getShcools(recepies[i]), // Este ya no existe
                             )
                           ],
                         ),
@@ -254,7 +256,9 @@ class _HomeState extends State<Home> {
                             color: Color.fromARGB(250, 66, 25, 8),
                           ),
                         ),
-                        ListBody(children: getProductsNeeded(recepies[i])),
+                        ListBody(
+                            children: getProductsNeeded(recepies[
+                                i])), // Es directamente un string, no una colección
                         const SizedBox(
                           height: 5,
                         ),
@@ -266,7 +270,8 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         ListBody(
-                          children: getSteps(recepies[i]),
+                          children: getSteps(recepies[
+                              i]), // Es directamente un string, no una colección
                         ),
                         const SizedBox(
                           height: 5,
@@ -369,7 +374,8 @@ class _HomeState extends State<Home> {
                           height: 300,
                           width: 300,
                           child: ListView(
-                            children: getComments(recepies[i]),
+                            children:
+                                getComments(recepies[i]), // No more Comments
                           ),
                         ),
                         const SizedBox(
@@ -469,109 +475,5 @@ class _HomeState extends State<Home> {
     }
 
     return banners;
-  }
-
-  getShcools(Recepie r) {
-    final schools = <Widget>[];
-
-    for (int i = 0; i < r.coffeeSchools.length; i++) {
-      schools.add(
-        TextButton(
-          style: const ButtonStyle(
-            backgroundColor:
-                WidgetStatePropertyAll(Color.fromARGB(250, 168, 93, 48)),
-          ),
-          onPressed: () {},
-          child: Text(
-            r.coffeeSchools[i].name,
-            style: const TextStyle(color: Color.fromARGB(250, 236, 204, 180)),
-          ),
-        ),
-      );
-    }
-
-    return schools;
-  }
-
-  getProductsNeeded(Recepie r) {
-    final products = <Widget>[];
-
-    for (int i = 0; i < r.products.length; i++) {
-      products.add(
-        Text(
-          ' - ${r.products[i].name}',
-          style: const TextStyle(
-            color: Color.fromARGB(250, 66, 25, 8),
-            fontFamily: 'Sitka',
-          ),
-        ),
-      );
-    }
-
-    return products;
-  }
-
-  getSteps(Recepie r) {
-    final steps = <Widget>[];
-
-    for (int i = 0; i < r.steps.length; i++) {
-      steps.add(
-        Text(
-          '$i. ${r.steps[i]}',
-          style: const TextStyle(
-            color: Color.fromARGB(250, 66, 25, 8),
-            fontFamily: 'Sitka',
-          ),
-        ),
-      );
-    }
-
-    return steps;
-  }
-
-  getComments(Recepie r) {
-    final comments = <Widget>[];
-
-    for (int i = 0; i < r.comments.length; i++) {
-      comments.add(
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 5.0,
-            bottom: 5.0,
-          ),
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
-                ),
-                color: Color.fromARGB(250, 168, 93, 48)),
-            child: ListTile(
-              leading: const Icon(
-                Icons.account_circle,
-                size: 50,
-                color: Color.fromARGB(250, 236, 204, 180),
-              ),
-              title: Text(
-                r.comments[i].owner.name,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Color.fromARGB(250, 236, 204, 180),
-                ),
-              ),
-              subtitle: Text(
-                r.comments[i].text,
-                style: const TextStyle(
-                  color: Color.fromARGB(250, 236, 204, 180),
-                  fontFamily: 'Sitka',
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return comments;
   }
 }

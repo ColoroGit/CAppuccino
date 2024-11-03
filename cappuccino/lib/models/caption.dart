@@ -1,0 +1,28 @@
+class Caption {
+  int id;
+  int recepieId;
+  String caption; //The file path to the stored picture
+
+  Caption({
+    required this.id,
+    required this.recepieId,
+    required this.caption,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'recepieId': recepieId,
+      'caption': caption,
+    };
+  }
+
+  static Caption fromMap(Map map) {
+    Caption caption = new Caption(
+      id: map['id'],
+      recepieId: map['recepieId'],
+      caption: map['caption'],
+    );
+    return caption;
+  }
+}

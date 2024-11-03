@@ -1,13 +1,12 @@
 class Recepie {
-  final int id;
+  int id;
   String title;
-  int timeOfPrep = 0;
+  int timeOfPrep;
   DateTime dateOfCreation;
-  int timesPrepared = 0;
+  int timesPrepared;
   String ingredients;
   String products;
   String steps;
-  List<String> captions = List.empty(growable: true);
 
   Recepie({
     required this.id,
@@ -19,4 +18,31 @@ class Recepie {
     required this.steps,
     this.timesPrepared = 0,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'timeOfPrep': timeOfPrep,
+      'dateOfCreation': dateOfCreation,
+      'ingredients': ingredients,
+      'products': products,
+      'steps': steps,
+      'timesPrepared': timesPrepared,
+    };
+  }
+
+  static Recepie fromMap(Map map) {
+    Recepie recepie = new Recepie(
+      id: map['id'],
+      title: map['title'],
+      timeOfPrep: map['timeOfPrep'],
+      dateOfCreation: map['dateOfCreation'],
+      ingredients: map['ingredients'],
+      products: map['products'],
+      steps: map['steps'],
+      timesPrepared: map['timesPrepared'],
+    );
+    return recepie;
+  }
 }
