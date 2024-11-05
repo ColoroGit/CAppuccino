@@ -1,26 +1,25 @@
-import 'package:cappuccino/models/caption.dart';
 import 'package:cappuccino/models/recepie.dart';
-import 'package:cappuccino/pages/my_barista.dart';
+import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/pages/my_recepies.dart';
-import 'package:cappuccino/utils/database_helper.dart';
+// import 'package:cappuccino/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class MyBarista extends StatefulWidget {
+  const MyBarista({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<StatefulWidget> createState() => _MyBaristaState();
 }
 
-class _HomeState extends State<Home> {
-  DatabaseHelper db = DatabaseHelper.instance;
-  List<Recepie> recepies = [];
+class _MyBaristaState extends State<MyBarista> {
+  // DatabaseHelper db = DatabaseHelper.instance;
+  List<Recepie> br = [];
 
-  refreshRecepies() {
-    db.fetchAllRecepies().then((value) {
+  loadBaristaRecepies() {
+    Recepie.loadRecepies().then((value) {
       setState(() {
-        recepies = value;
+        br = value;
       });
     });
   }
@@ -28,7 +27,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    refreshRecepies();
+    loadBaristaRecepies();
   }
 
   @override
@@ -95,7 +94,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Center(
-        child: ListView(children: getRecepiesBanners()),
+        child: ListView(children: getBaristaRecepiesBanners()),
       ),
       persistentFooterButtons: [
         Container(
@@ -125,21 +124,19 @@ class _HomeState extends State<Home> {
               IconButton(
                 icon: const Icon(
                   Icons.home_filled,
-                  color: Color.fromARGB(250, 236, 204, 180),
+                  color: Color.fromARGB(250, 66, 25, 8),
                   size: 40,
                 ),
-                onPressed: () {},
-              ),
-              IconButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyBarista()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home()));
                 },
+              ),
+              IconButton(
+                onPressed: () {},
                 icon: Image.asset(
-                  'assets/images/CoffeeSchool.png',
+                  'assets/images/Selected_CoffeeSchool.png',
                   height: 35,
                 ),
               ),
@@ -150,17 +147,10 @@ class _HomeState extends State<Home> {
     );
   }
 
-  getRecepiesBanners() {
-    final banners = <Widget>[];
-    List<Caption> captions = List.empty(growable: true);
+  getBaristaRecepiesBanners() {
+    var banners = <Widget>[];
 
-    for (int i = 0; i < recepies.length; i++) {
-      db.fetchRecepieCaptions(recepies[i].id).then((value) {
-        setState(() {
-          captions = value;
-        });
-      });
-
+    for (int i = 0; i < br.length; i++) {
       banners.add(
         TextButton(
           onPressed: () => showDialog<String>(
@@ -177,8 +167,7 @@ class _HomeState extends State<Home> {
               child: ListView(
                 children: [
                   // falta botón X
-                  // carrusel de imágenes?
-                  Image.asset(captions[0].caption),
+                  Image.asset(br[i].mainCaption),
                   const SizedBox(
                     height: 15,
                   ),
@@ -194,21 +183,21 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          recepies[i].title,
+                          br[i].title,
                           style: const TextStyle(
                             fontSize: 25,
                             color: Color.fromARGB(250, 66, 25, 8),
                           ),
                         ),
                         Text(
-                          'prep time: ${recepies[i].timeOfPrep} mins',
+                          'prep time: ${br[i].timeOfPrep} mins',
                           style: const TextStyle(
                             color: Color.fromARGB(250, 66, 25, 8),
                             fontFamily: 'Sitka',
                           ),
                         ),
                         Text(
-                          'date of creation: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
+                          'date of creation: ${br[i].dateOfCreation.day}/${br[i].dateOfCreation.month}/${br[i].dateOfCreation.year}',
                           style: const TextStyle(
                             color: Color.fromARGB(250, 66, 25, 8),
                             fontFamily: 'Sitka',
@@ -223,7 +212,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         Text(
-                          recepies[i].ingredients,
+                          br[i].ingredients,
                           style: const TextStyle(
                             color: Color.fromARGB(250, 66, 25, 8),
                             fontFamily: 'Sitka',
@@ -238,7 +227,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         Text(
-                          recepies[i].products,
+                          br[i].products,
                           style: const TextStyle(
                             color: Color.fromARGB(250, 66, 25, 8),
                             fontFamily: 'Sitka',
@@ -255,7 +244,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         Text(
-                          recepies[i].steps,
+                          br[i].steps,
                           style: const TextStyle(
                             color: Color.fromARGB(250, 66, 25, 8),
                             fontFamily: 'Sitka',
@@ -282,9 +271,9 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Image.asset(captions[0].caption),
+                    leading: Image.asset(br[i].mainCaption),
                     title: Text(
-                      recepies[i].title,
+                      br[i].title,
                       style: const TextStyle(
                         color: Color.fromARGB(250, 66, 25, 8),
                         fontSize: 20,

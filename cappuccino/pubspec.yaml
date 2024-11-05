@@ -43,6 +43,9 @@ flutter:
    - assets\images\Selected_Search.png
    - assets\images\CoffeeSchool.png
    - assets\images\Selected_CoffeeSchool.png
+   - assets\images\Flat_White_Especiado.png
+   - assets\json\questions.json
+   - assets\json\recepies.json
 
   fonts: 
    - family: Lucida

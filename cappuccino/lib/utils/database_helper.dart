@@ -39,7 +39,7 @@ class DatabaseHelper {
           ingredients TEXT NOT NULL,
           products TEXT NOT NULL,
           steps TEXT NOT NULL,
-          timesPrepared TEXT NOT NULL,
+          timesPrepared TEXT NOT NULL
          )''');
     await db.execute('''
         CREATE TABLE captions (
@@ -113,7 +113,7 @@ class DatabaseHelper {
   // fetch all RECEPIES ***********
   Future<List<Recepie>> fetchAllRecepies() async {
     Database db = await instance.database;
-    List<Map<String, dynamic>> results = await db.query("reecpies");
+    List<Map<String, dynamic>> results = await db.query("recepies");
 
     List<Recepie> recepies = [];
     for (var res in results) {
@@ -124,7 +124,7 @@ class DatabaseHelper {
   }
 
   // fetch CAPTIONS of a particular RECEPIE **********
-  Future<List<Caption>> fetchRecepieBlogs(int recepieId) async {
+  Future<List<Caption>> fetchRecepieCaptions(int recepieId) async {
     Database db = await instance.database;
     List<Map<String, dynamic>> results = await db.query(
       "captions",

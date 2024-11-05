@@ -10,6 +10,7 @@ class Recepie {
   String ingredients;
   String products;
   String steps;
+  String mainCaption = "";
 
   Recepie({
     required this.id,
@@ -20,6 +21,7 @@ class Recepie {
     required this.products,
     required this.steps,
     this.timesPrepared = 0,
+    this.mainCaption = "",
   });
 
   Map<String, dynamic> toMap() {
@@ -35,16 +37,23 @@ class Recepie {
     };
   }
 
+  // Este es para cargar desde un JSON, puede que haya que hacer otro para
+  // traerlo desde un map; desde la base de datos
   static Recepie fromMap(Map map) {
     Recepie recepie = Recepie(
       id: map['id'],
       title: map['title'],
       timeOfPrep: map['timeOfPrep'],
-      dateOfCreation: map['dateOfCreation'],
+      dateOfCreation: DateTime(
+        map['dateOfCreation']['año'],
+        map['dateOfCreation']['mes'],
+        map['dateOfCreation']['dia'],
+      ),
       ingredients: map['ingredients'],
       products: map['products'],
       steps: map['steps'],
       timesPrepared: map['timesPrepared'],
+      mainCaption: (map['caption'] != null) ? map['caption'] : "",
     );
     return recepie;
   }
@@ -53,9 +62,8 @@ class Recepie {
   static Future<List<Recepie>> loadRecepies() async {
     final jsonString = await rootBundle.loadString('assets/json/recepies.json');
     final List<dynamic> jsonDecoded = jsonDecode(jsonString) as List<dynamic>;
-    print("test----:" + jsonDecoded.toString());
     return jsonDecoded
         .map((dynamic item) => Recepie.fromMap(item as Map<String, dynamic>))
-        .toList(); // no sé si esto funcione, sino probar con un for
+        .toList();
   }
 }

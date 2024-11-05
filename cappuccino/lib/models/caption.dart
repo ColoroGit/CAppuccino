@@ -18,7 +18,7 @@ class Caption {
   }
 
   static Caption fromMap(Map map) {
-    Caption caption = new Caption(
+    Caption caption = Caption(
       id: map['id'],
       recepieId: map['recepieId'],
       caption: map['caption'],
