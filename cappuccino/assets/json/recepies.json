@@ -1,0 +1,57 @@
+[
+    {
+        "id": 0,
+        "title": "Latte",
+        "timeOfPrep": 10,
+        "dateOfCreation": {"año": 2024, "mes": 8, "dia": 9},
+        "ingredients": "1 café expreso de 25-35 ml \n150 ml. de leche \nAzúcar o sacarina para el momento de servir",
+        "products": "Se puede moler el café de forma manual y usar una cafetera, o con una máquina de café \nTaza",
+        "steps": "En el caso de que hayamos decidido moler el café de forma manual, es recomendable que se haga en el momento en el que vayamos a prepararlo. La molienda debe ser fina o media y deberá pesar unos 7 gramos. Presiona la cantidad de café en el portafiltro con ayuda del compactador. Si lo queremos hacer doble o para dos consumidores, utilizaremos 18 gramos de café molido.\nComenzaremos purgando la máquina, es decir, que salga un poco de agua. Después lo colocaremos en el portafiltro y prepararemos la infusión de unos 25-35 ml, a 90º C, disponiendo previamente una taza o vaso de boca ancha (150-200 ml de capacidad).\nSi estás utilizando una superautomática, indica la preparación de un expreso al gusto.\nA continuación, será el momento de llenar de leche nuestra jarra por la parte inferior del pico vertedor, tendrá una marca en su zona interior. Dejaremos que salga el vapor con el fin de que se elimine el agua que se haya condensado en su interior y acto seguido, introduciremos la leche hacia la boca de la jarra. La punta debe quedar en la parte inferior de la superficie de la leche.\nActivaremos el vapor manteniendo la jarra agarrada por la parte inferior y por su asa. Una vez que el pitido suene, bajaremos la punta viendo que la leche toma forma de molinillo y comienza a crecer. Mantenlo hasta que llegue a una temperatura de 60º C, sin rebasar los 65º C. Puedes utilizar un termómetro o notar que la parte inferior no quema.\nSaca la boquilla y homogeniza dando unos suaves golpes contra una superficie. El café, ya preparado y dispuesto en la taza o vaso, debe inclinarse. La leche caerá desde una altura de 5 a 10 cm con el fin de que penetre dentro del café. Llenados 2/3 de la taza, enderezaremos y terminaremos de agregar el último tercio.\nPuedes utilizar también otros tipos de cafeteras, ya sea una manual o una italiana, además de agregar la cantidad de azúcar o sacarina en función de tus preferencias. Y ya tendremos un café con leche preparado de la misma forma en la que lo hacen los maestros cafeteros.",
+        "timesPrepared": 0,
+        "caption" : "assets/images/Latte.png"
+    },
+    {
+        "id": 1,
+        "title": "Cappuccino",
+        "timeOfPrep": 3,
+        "dateOfCreation": {"año": 2024, "mes": 9, "dia": 5},
+        "ingredients": "125 ml. de leche entera y fría \n25 ml. de café expreso \nCacao en polvo o canela molida, opcional",
+        "products": "Cafetera, la que prefieras para hacer el expreso \nVaporizador o espumador \nTaza", 
+        "steps": "Prepara un espresso en una taza. \nEspuma la leche con ayuda de tu vaporizador o espumador.\nVierte la leche espumada sobre el café. La proporción es 1/3 de café, 1/3 leche y 1/3 espuma de leche.\nDecora con un poco de canela o cacao en polvo por encima.",
+        "timesPrepared": 0,
+        "caption" : "assets/images/Cappuccino.png"
+    },
+    {
+        "id": 2,
+        "title": "Macchiato",
+        "timeOfPrep": 10,
+        "dateOfCreation": {"año": 2022, "mes": 5, "dia": 12},
+        "ingredients": "25 ml. de café expresso \n100 ml. de leche entera",
+        "products": "Cafetera, la que prefieras para hacer el expreso \nVaporizador o espumador \nTaza", 
+        "steps": "Preparamos el espresso como siempre. Recuerda que son entre 20 y 25 ml. Pero lo importante es seguir las instrucciones de tu cafetera.\nA continuación, agregamos la espuma de leche, lo ideal es echar justo la mitad de la de café que hayamos echado. Cada uno tiene su particular modo de echarla, pero os propongo ponerla con una cucharita en el centro poco a poco.\nHay gente que le echa un poquito de leche caliente, seguirá siendo un expresso mientras la leche y la espuma no superen la cantidad de espresso, aunque por su volumen aparente mucho más. Si lo que quieres es un doble espresso macchiato, basta con doblar las cantidades y listo.",
+        "timesPrepared": 0,
+        "caption" : "assets/images/Macchiato.png"
+    },
+    {
+        "id": 3,
+        "title": "Mocha",
+        "timeOfPrep": 10,
+        "dateOfCreation": {"año": 2023, "mes": 12, "dia": 21},
+        "ingredients": "1 café espresso (25 ml.) \n1 taza de leche o bebida vegetal \n2 cucharadas de sirope de chocolate o chocolate derretido",
+        "products": "Cafetera, la que prefieras para hacer el espresso \nVaporizador o espumador \nTaza", 
+        "steps": "Vierte el sirope de chocolate en el fondo y paredes del vaso que vayas a utilizar.\nPrepara un espresso, añádelo al vaso con el sirope de chocolate y remueve.\nEspuma la leche o bebida vegetal con ayuda del vaporizador o espumador.\nAñade la leche espumada sobre el café hasta llegar al borde.",
+        "timesPrepared": 0,
+        "caption" : "assets/images/Mocha.png"
+    },
+    {
+        "id": 4,
+        "title": "Flat White Especiado",
+        "timeOfPrep": 3,
+        "dateOfCreation": {"año": 2023, "mes": 12, "dia": 21},
+        "ingredients": "2 shot de espresso o espresso doble \n1/3 taza de leche o bebida vegetal \n1 pizca de canela molida \n1 pizca de nuez moscada molida \n1 pizca de jengibre molido \n1 pizca de pimienta molida",
+        "products": "Cafetera, la que prefieras para hacer el espresso \nVaporizador o espumador \nTaza", 
+        "steps": "Prepara dos shot de espresso o espresso doble en una taza.\nIncorpora las especias (canela, nuez moscada, jengibre y pimienta) y remueve bien para que se integren. \nEspuma la leche caliente o bebida vegetal con el vaporizador o el espumador.\nVierte la leche espumada sobre el café hasta el borde.\nDecora por encima con un poquito más de canela en polvo.",
+        "timesPrepared": 0,
+        "caption" : "assets/images/Flat_White_Especiado.png"
+    }
+]

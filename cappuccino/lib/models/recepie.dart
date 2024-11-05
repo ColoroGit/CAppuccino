@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
 class Recepie {
   int id;
   String title;
@@ -33,7 +36,7 @@ class Recepie {
   }
 
   static Recepie fromMap(Map map) {
-    Recepie recepie = new Recepie(
+    Recepie recepie = Recepie(
       id: map['id'],
       title: map['title'],
       timeOfPrep: map['timeOfPrep'],
@@ -44,5 +47,15 @@ class Recepie {
       timesPrepared: map['timesPrepared'],
     );
     return recepie;
+  }
+
+  // Para cargar recetas desde un JSON. Esto debería ser llamado desde mi barista
+  static Future<List<Recepie>> loadRecepies() async {
+    final jsonString = await rootBundle.loadString('assets/json/recepies.json');
+    final List<dynamic> jsonDecoded = jsonDecode(jsonString) as List<dynamic>;
+    print("test----:" + jsonDecoded.toString());
+    return jsonDecoded
+        .map((dynamic item) => Recepie.fromMap(item as Map<String, dynamic>))
+        .toList(); // no sé si esto funcione, sino probar con un for
   }
 }
