@@ -10,7 +10,7 @@ class MyOpinion extends StatefulWidget {
 
 class _MyOpinionState extends State<MyOpinion> {
   List<Question> questions = List.empty(growable: true);
-  var values = <double>[];
+  var values = <int>[];
 
   loadQuestions() {
     Question.loadQuestions().then((value) {
@@ -56,7 +56,7 @@ class _MyOpinionState extends State<MyOpinion> {
           width: 375,
           height: 300,
           child: Container(
-            margin: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+            margin: const EdgeInsets.all(20.0),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(50),
@@ -65,7 +65,7 @@ class _MyOpinionState extends State<MyOpinion> {
               color: Color.fromARGB(255, 206, 140, 92),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -79,33 +79,44 @@ class _MyOpinionState extends State<MyOpinion> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                        questions[i].min,
-                        textAlign: TextAlign.center,
-                        textWidthBasis: TextWidthBasis.parent,
-                        style: const TextStyle(
-                          color: Color.fromARGB(250, 66, 25, 8),
-                          fontFamily: 'Sitka',
+                      SizedBox(
+                        width: 75,
+                        child: Text(
+                          questions[i].min,
+                          textAlign: TextAlign.center,
+                          textWidthBasis: TextWidthBasis.parent,
+                          style: const TextStyle(
+                            color: Color.fromARGB(250, 66, 25, 8),
+                            fontFamily: 'Sitka',
+                            fontSize: 12,
+                          ),
                         ),
                       ),
-                      Slider(
-                        value: values[i],
-                        divisions: 5,
-                        label: "${values[i]}",
-                        min: 0,
-                        max: 5,
-                        onChanged: (v) {
-                          setState(() {
-                            values[i] = v;
-                          });
-                        },
+                      SizedBox(
+                        width: 150,
+                        child: Slider(
+                          value: values[i].toDouble(),
+                          divisions: 5,
+                          label: "${values[i]}",
+                          min: 0,
+                          max: 5,
+                          onChanged: (double v) {
+                            setState(() {
+                              values[i] = v.round();
+                            });
+                          },
+                        ),
                       ),
-                      Text(
-                        questions[i].max,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color.fromARGB(250, 66, 25, 8),
-                          fontFamily: 'Sitka',
+                      SizedBox(
+                        width: 75,
+                        child: Text(
+                          questions[i].max,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Color.fromARGB(250, 66, 25, 8),
+                            fontFamily: 'Sitka',
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],

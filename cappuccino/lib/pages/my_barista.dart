@@ -149,8 +149,8 @@ class _MyBaristaState extends State<MyBarista> {
 
   getBaristaRecepiesBanners() {
     var banners = <Widget>[];
-    double top = 0;
-    double left = 0;
+    double top = 2;
+    double left = 230;
 
     for (int i = 0; i < br.length; i++) {
       banners.add(
@@ -260,20 +260,17 @@ class _MyBaristaState extends State<MyBarista> {
                     ],
                   ),
                   Positioned(
-                    //let's try with Stack instead, and put various buttons
                     left: left,
                     top: top,
-                    child: GestureDetector(
-                      onPanUpdate: (details) {
-                        setState(() {
-                          left += details.delta.dx;
-                          top += details.delta.dy;
-                        });
-                      },
-                      child: FloatingActionButton(
-                        onPressed: () {},
-                        child: const Icon(Icons.add),
-                      ),
+                    child: Column(
+                      children: [
+                        FloatingActionButton.small(
+                          onPressed: () {
+                            /*pasar a mis recetas, guardar en base de datos*/
+                          },
+                          child: const Icon(Icons.add),
+                        ),
+                      ],
                     ),
                   ),
                 ],
