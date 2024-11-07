@@ -2,6 +2,7 @@ import 'package:cappuccino/models/recepie.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/my_barista.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
+import 'package:cappuccino/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class MyRecepies extends StatefulWidget {
@@ -12,12 +13,13 @@ class MyRecepies extends StatefulWidget {
 }
 
 class _MyRecepiesState extends State<MyRecepies> {
-  List<Recepie> br = [];
+  DatabaseHelper db = DatabaseHelper.instance;
+  List<Recepie> recepies = [];
 
-  loadBaristaRecepies() {
-    Recepie.loadRecepies().then((value) {
+  refreshRecepies() {
+    db.fetchAllRecepies().then((value) {
       setState(() {
-        br = value;
+        recepies = value;
       });
     });
   }
@@ -25,7 +27,7 @@ class _MyRecepiesState extends State<MyRecepies> {
   @override
   void initState() {
     super.initState();
-    loadBaristaRecepies();
+    refreshRecepies();
   }
 
   @override

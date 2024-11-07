@@ -149,6 +149,8 @@ class _MyBaristaState extends State<MyBarista> {
 
   getBaristaRecepiesBanners() {
     var banners = <Widget>[];
+    double top = 0;
+    double left = 0;
 
     for (int i = 0; i < br.length; i++) {
       banners.add(
@@ -164,93 +166,114 @@ class _MyBaristaState extends State<MyBarista> {
               ),
               backgroundColor: const Color.fromARGB(255, 206, 140, 92),
               surfaceTintColor: const Color.fromARGB(250, 66, 25, 8),
-              child: ListView(
+              child: Stack(
                 children: [
-                  // falta botón X
-                  Image.asset(br[i].mainCaption),
-                  const SizedBox(
-                    height: 15,
+                  ListView(
+                    children: [
+                      // falta botón X
+                      Image.asset(br[i].mainCaption),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10.0,
+                          right: 10,
+                          bottom: 10,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              br[i].title,
+                              style: const TextStyle(
+                                fontSize: 25,
+                                color: Color.fromARGB(250, 66, 25, 8),
+                              ),
+                            ),
+                            Text(
+                              'prep time: ${br[i].timeOfPrep} mins',
+                              style: const TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            Text(
+                              'date of creation: ${br[i].dateOfCreation.day}/${br[i].dateOfCreation.month}/${br[i].dateOfCreation.year}',
+                              style: const TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'Ingredients',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Color.fromARGB(250, 66, 25, 8),
+                              ),
+                            ),
+                            Text(
+                              br[i].ingredients,
+                              style: const TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'Products',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Color.fromARGB(250, 66, 25, 8),
+                              ),
+                            ),
+                            Text(
+                              br[i].products,
+                              style: const TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              'Steps',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Color.fromARGB(250, 66, 25, 8),
+                              ),
+                            ),
+                            Text(
+                              br[i].steps,
+                              style: const TextStyle(
+                                color: Color.fromARGB(250, 66, 25, 8),
+                                fontFamily: 'Sitka',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 10,
-                      bottom: 10,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          br[i].title,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          'prep time: ${br[i].timeOfPrep} mins',
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        Text(
-                          'date of creation: ${br[i].dateOfCreation.day}/${br[i].dateOfCreation.month}/${br[i].dateOfCreation.year}',
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Ingredients',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          br[i].ingredients,
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Products',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          br[i].products,
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          'Steps',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          br[i].steps,
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                      ],
+                  Positioned(
+                    //let's try with Stack instead, and put various buttons
+                    left: left,
+                    top: top,
+                    child: GestureDetector(
+                      onPanUpdate: (details) {
+                        setState(() {
+                          left += details.delta.dx;
+                          top += details.delta.dy;
+                        });
+                      },
+                      child: FloatingActionButton(
+                        onPressed: () {},
+                        child: const Icon(Icons.add),
+                      ),
                     ),
                   ),
                 ],

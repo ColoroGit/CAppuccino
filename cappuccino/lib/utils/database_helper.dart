@@ -35,15 +35,25 @@ class DatabaseHelper {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT NOT NULL,
           timeOfPrep INTEGER NOT NULL,
-          dateOfCreation TEXT NOT NULL,
+          dateOfCreation INTEGER NOT NULL,
           ingredients TEXT NOT NULL,
           products TEXT NOT NULL,
           steps TEXT NOT NULL,
-          timesPrepared TEXT NOT NULL
+          timesPrepared TEXT NOT NULL,   
+          FOREIGN KEY (dateOfCreation) REFERENCES dates (id)                  
+           ON DELETE NO ACTION ON UPDATE NO ACTION
+
          )''');
     await db.execute('''
+        CREATE TABLE dates (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          year INTEGER NOT NULL,
+          month INTEGER NOT NULL,
+          day INTEGER NOT NULL
+        )''');
+    await db.execute('''
         CREATE TABLE captions (
-          id INTEGER PRIMARY KEY,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
           recepieId INTEGER NOT NULL,    
           caption TEXT NOT NULL,   
           FOREIGN KEY (recepieId) REFERENCES recepies (id)                  
@@ -58,11 +68,21 @@ class DatabaseHelper {
         "SELECT COUNT(*) FROM recepies WHERE title = ?", [recepie.title]));
 
     if (count == 0) {
+      await db.insert(
+        "dates",
+        recepie.dateOfCreation.toMap(),
+      );
       recepie.id = await db.insert(
         "recepies",
         recepie.toMap(),
       );
     } else {
+      await db.update(
+        "dates",
+        recepie.dateOfCreation.toMap(),
+        where: "id = ?",
+        whereArgs: [recepie.dateOfCreation.id],
+      );
       await db.update(
         "recepies",
         recepie.toMap(),
@@ -97,16 +117,22 @@ class DatabaseHelper {
   }
 
   // fetch a single RECEPIE ***************
-  Future<Recepie> fetchRecepie(int id) async {
+  Future<Recepie> fetchRecepie(Recepie r) async {
     Database db = await instance.database;
 
     List<Map> results = await db.query(
       "recepies",
       where: "id = ?",
-      whereArgs: [id],
+      whereArgs: [r.id],
     );
 
-    Recepie recepie = Recepie.fromMap(results[0]);
+    List<Map> dates = await db.query(
+      "dates",
+      where: "id = ?",
+      whereArgs: [r.dateOfCreation.id],
+    );
+
+    Recepie recepie = Recepie.fromDB(results[0], dates[0]);
     return recepie;
   }
 
@@ -117,7 +143,12 @@ class DatabaseHelper {
 
     List<Recepie> recepies = [];
     for (var res in results) {
-      Recepie r = Recepie.fromMap(res);
+      List<Map> date = await db.query(
+        "dates",
+        where: "id = ?",
+        whereArgs: res['dateOfCreation'],
+      );
+      Recepie r = Recepie.fromDB(res, date[0]);
       recepies.add(r);
     }
     return recepies;
@@ -141,8 +172,9 @@ class DatabaseHelper {
   }
 
   // DELETE RECEPIE
-  Future<int> deleteRecepie(int id) async {
+  Future<int> deleteRecepie(Recepie r) async {
     Database db = await instance.database;
-    return await db.delete("recepie", where: "id = ?", whereArgs: [id]);
+    await db.delete("dates", where: "id = ?", whereArgs: [r.dateOfCreation.id]);
+    return await db.delete("recepie", where: "id = ?", whereArgs: [r.id]);
   }
 }
