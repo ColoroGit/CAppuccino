@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:cappuccino/models/caption.dart';
 import 'package:cappuccino/models/recepie.dart';
 import 'package:cappuccino/pages/my_barista.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
@@ -157,15 +156,8 @@ class _HomeState extends State<Home> {
 
   getRecepiesBanners() {
     final banners = <Widget>[];
-    List<Caption> captions = List.empty(growable: true);
 
     for (int i = 0; i < recepies.length; i++) {
-      db.fetchRecepieCaptions(recepies[i].id).then((value) {
-        setState(() {
-          captions = value;
-        });
-      });
-
       banners.add(
         TextButton(
           onPressed: () => showDialog<String>(
@@ -183,7 +175,7 @@ class _HomeState extends State<Home> {
                 children: [
                   // falta botón X
                   // carrusel de imágenes?
-                  Image.asset(captions[0].caption),
+                  Image.asset(recepies[i].captions[0].caption),
                   const SizedBox(
                     height: 15,
                   ),
@@ -287,7 +279,7 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Image.asset(captions[0].caption),
+                    leading: Image.asset(recepies[i].captions[0].caption),
                     title: Text(
                       recepies[i].title,
                       style: const TextStyle(

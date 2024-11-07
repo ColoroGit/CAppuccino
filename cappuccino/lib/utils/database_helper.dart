@@ -1,3 +1,4 @@
+import 'package:cappuccino/models/barista_recepie.dart';
 import 'package:cappuccino/models/caption.dart';
 import 'package:cappuccino/models/recepie.dart';
 import 'package:sqflite/sqflite.dart';
@@ -63,35 +64,89 @@ class DatabaseHelper {
 
   Future<Recepie> insertRecepie(Recepie recepie) async {
     Database db = await instance.database;
-    await db.insert(
+    var dID = await db.insert(
       "dates",
       recepie.dateOfCreation.toMap(),
     );
     recepie.id = await db.insert(
       "recepies",
-      recepie.toMap(),
+      recepie.toMap(dID),
     );
 
-    //Falta insertar la imágen
+    for (var c in recepie.captions) {
+      await db.insert(
+        "captions",
+        c.toMap(recepie.id),
+      );
+    }
 
     return recepie;
   }
 
-  // Inserting and updating a RECEPIE **************
+  Future<Recepie> insertBRecepie(BRecepie br) async {
+    Database db = await instance.database;
+
+    List<Caption> captions = List.empty(growable: true);
+    captions.add(br.mainCaption);
+
+    Recepie r = Recepie(
+      id: -1,
+      title: br.title,
+      timeOfPrep: br.timeOfPrep,
+      dateOfCreation: br.dateOfCreation,
+      ingredients: br.ingredients,
+      products: br.products,
+      steps: br.steps,
+      captions: captions,
+    );
+
+    var dID = await db.insert(
+      "dates",
+      br.dateOfCreation.toMap(),
+    );
+
+    r.id = await db.insert(
+      "recepies",
+      r.toMap(dID),
+    );
+
+    await db.insert(
+      "captions",
+      br.mainCaption.toMap(r.id),
+    );
+
+    return r;
+  }
+
+  // Updating a RECEPIE **************
   Future<Recepie> updateRecepie(Recepie recepie) async {
     Database db = await instance.database;
     var count = Sqflite.firstIntValue(await db
         .rawQuery("SELECT COUNT(*) FROM recepies WHERE id = ?", [recepie.id]));
 
     if (count != 0) {
-      await db.insert(
+      await db.update(
         "dates",
         recepie.dateOfCreation.toMap(),
+        where: "id = ?",
+        whereArgs: [recepie.dateOfCreation.id],
       );
-      recepie.id = await db.insert(
+
+      recepie.id = await db.update(
         "recepies",
-        recepie.toMap(),
+        recepie.toMap(recepie.dateOfCreation.id),
+        where: "id = ?",
+        whereArgs: [recepie.id],
       );
+
+      for (var c in recepie.captions) {
+        await db.update(
+          "captions",
+          c.toMap(recepie.id),
+          where: "id = ?",
+          whereArgs: [recepie.id],
+        );
+      }
     } else {
       print("Error, this recepie doesn't exist");
     }
@@ -99,28 +154,28 @@ class DatabaseHelper {
     return recepie;
   }
 
-  // Inserting and updating a CAPTION ********** (consider just making a insert, we might not need to modify)
-  Future<Caption> upsertCaption(Caption caption) async {
-    Database db = await instance.database;
-    var count = Sqflite.firstIntValue(await db
-        .rawQuery("SELECT COUNT(*) FROM captions WHERE id = ?", [caption.id]));
+  // // Inserting and updating a CAPTION ********** (consider just making a insert, we might not need to modify)
+  // Future<Caption> upsertCaption(Caption caption) async {
+  //   Database db = await instance.database;
+  //   var count = Sqflite.firstIntValue(await db
+  //       .rawQuery("SELECT COUNT(*) FROM captions WHERE id = ?", [caption.id]));
 
-    if (count == 0) {
-      await db.insert(
-        "captions",
-        caption.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    } else {
-      await db.update(
-        "captions",
-        caption.toMap(),
-        where: "id = ?",
-        whereArgs: [caption.id],
-      );
-    }
-    return caption;
-  }
+  //   if (count == 0) {
+  //     await db.insert(
+  //       "captions",
+  //       caption.toMap(),
+  //       conflictAlgorithm: ConflictAlgorithm.replace,
+  //     );
+  //   } else {
+  //     await db.update(
+  //       "captions",
+  //       caption.toMap(),
+  //       where: "id = ?",
+  //       whereArgs: [caption.id],
+  //     );
+  //   }
+  //   return caption;
+  // }
 
   // fetch a single RECEPIE ***************
   Future<Recepie> fetchRecepie(Recepie r) async {
@@ -138,7 +193,13 @@ class DatabaseHelper {
       whereArgs: [r.dateOfCreation.id],
     );
 
-    Recepie recepie = Recepie.fromDB(results[0], dates[0]);
+    List<Map> captions = await db.query(
+      "captions",
+      where: "recepieId = ?",
+      whereArgs: [r.id],
+    );
+
+    Recepie recepie = Recepie.fromDB(results[0], dates[0], captions);
     return recepie;
   }
 
@@ -154,28 +215,33 @@ class DatabaseHelper {
         where: "id = ?",
         whereArgs: [res['dateOfCreation']],
       );
-      Recepie r = Recepie.fromDB(res, date[0]);
+      List<Map> captions = await db.query(
+        "captions",
+        where: "recepieId = ?",
+        whereArgs: [res['id']],
+      );
+      Recepie r = Recepie.fromDB(res, date[0], captions);
       recepies.add(r);
     }
     return recepies;
   }
 
-  // fetch CAPTIONS of a particular RECEPIE **********
-  Future<List<Caption>> fetchRecepieCaptions(int recepieId) async {
-    Database db = await instance.database;
-    List<Map<String, dynamic>> results = await db.query(
-      "captions",
-      where: "recepieId = ?",
-      whereArgs: [recepieId],
-    );
+  // // fetch CAPTIONS of a particular RECEPIE **********
+  // Future<List<Caption>> fetchRecepieCaptions(int recepieId) async {
+  //   Database db = await instance.database;
+  //   List<Map<String, dynamic>> results = await db.query(
+  //     "captions",
+  //     where: "recepieId = ?",
+  //     whereArgs: [recepieId],
+  //   );
 
-    List<Caption> captions = [];
-    for (var res in results) {
-      Caption c = Caption.fromMap(res);
-      captions.add(c);
-    }
-    return captions;
-  }
+  //   List<Caption> captions = [];
+  //   for (var res in results) {
+  //     Caption c = Caption.fromMap(res);
+  //     captions.add(c);
+  //   }
+  //   return captions;
+  // }
 
   // DELETE RECEPIE
   Future<int> deleteRecepie(Recepie r) async {

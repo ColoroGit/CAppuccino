@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:cappuccino/models/recepie.dart';
+import 'package:cappuccino/models/barista_recepie.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/pages/my_recepies.dart';
@@ -17,10 +17,10 @@ class MyBarista extends StatefulWidget {
 
 class _MyBaristaState extends State<MyBarista> {
   DatabaseHelper db = DatabaseHelper.instance;
-  List<Recepie> br = [];
+  List<BRecepie> br = [];
 
   loadBaristaRecepies() {
-    Recepie.loadRecepies().then((value) {
+    BRecepie.loadBRecepies().then((value) {
       setState(() {
         br = value;
       });
@@ -179,7 +179,7 @@ class _MyBaristaState extends State<MyBarista> {
                   ListView(
                     children: [
                       // falta botón X
-                      Image.asset(br[i].mainCaption),
+                      Image.asset(br[i].mainCaption.caption),
                       const SizedBox(
                         height: 15,
                       ),
@@ -274,7 +274,7 @@ class _MyBaristaState extends State<MyBarista> {
                       children: [
                         FloatingActionButton.small(
                           onPressed: () {
-                            db.insertRecepie(br[i]);
+                            db.insertBRecepie(br[i]);
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => const Dialog(
@@ -305,7 +305,7 @@ class _MyBaristaState extends State<MyBarista> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Image.asset(br[i].mainCaption),
+                    leading: Image.asset(br[i].mainCaption.caption),
                     title: Text(
                       br[i].title,
                       style: const TextStyle(

@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:cappuccino/models/caption.dart';
 import 'package:cappuccino/models/date.dart';
 import 'package:flutter/services.dart';
 
 class Recepie {
-  int id;
+  late int id;
   String title;
   int timeOfPrep;
   Date dateOfCreation;
@@ -11,7 +12,7 @@ class Recepie {
   String ingredients;
   String products;
   String steps;
-  String mainCaption = "";
+  List<Caption> captions;
 
   Recepie({
     required this.id,
@@ -21,16 +22,16 @@ class Recepie {
     required this.ingredients,
     required this.products,
     required this.steps,
+    required this.captions,
     this.timesPrepared = 0,
-    this.mainCaption = "",
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(int? dID) {
     return {
-      'id': id, //is this necesary?
+      // 'id': id, //is this necesary?
       'title': title,
       'timeOfPrep': timeOfPrep,
-      'dateOfCreation': dateOfCreation.id, //the database recieves the id of doc
+      'dateOfCreation': dID, //the database recieves the id of doc
       'ingredients': ingredients,
       'products': products,
       'steps': steps,
@@ -38,9 +39,12 @@ class Recepie {
     };
   }
 
-  // Este es para cargar desde un JSON, puede que haya que hacer otro para
-  // traerlo desde un map; desde la base de datos
+  // Este es para crear una receta desde un JSON
   static Recepie fromJSON(Map map) {
+    List<Caption> captions = List.empty(growable: true);
+
+    captions.add(Caption.fromMap(map['caption']));
+
     Recepie recepie = Recepie(
       id: map['id'],
       title: map['title'],
@@ -50,12 +54,19 @@ class Recepie {
       products: map['products'],
       steps: map['steps'],
       timesPrepared: map['timesPrepared'],
-      mainCaption: (map['caption'] != null) ? map['caption'] : "",
+      captions: captions,
     );
     return recepie;
   }
 
-  static Recepie fromDB(Map map, Map d) {
+  //Este es para traer una receta desde la base de datos
+  static Recepie fromDB(Map map, Map d, List<Map> cs) {
+    List<Caption> captions = List.empty(growable: true);
+
+    for (var c in cs) {
+      captions.add(Caption.fromMap(c));
+    }
+
     return Recepie(
       id: map['id'],
       title: map['title'],
@@ -64,6 +75,7 @@ class Recepie {
       ingredients: map['ingredients'],
       products: map['products'],
       steps: map['steps'],
+      captions: captions,
     );
   }
 
