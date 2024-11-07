@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:cappuccino/models/caption.dart';
 import 'package:cappuccino/models/recepie.dart';
 import 'package:cappuccino/pages/my_barista.dart';
@@ -7,7 +8,9 @@ import 'package:cappuccino/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({super.key, required this.camera});
+
+  final CameraDescription camera;
 
   @override
   State<Home> createState() => _HomeState();
@@ -115,7 +118,8 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyRecepies()));
+                          builder: (context) =>
+                              MyRecepies(camera: widget.camera)));
                 },
                 icon: Image.asset(
                   'assets/images/Search.png',
@@ -136,7 +140,8 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyBarista()));
+                          builder: (context) =>
+                              MyBarista(camera: widget.camera)));
                 },
                 icon: Image.asset(
                   'assets/images/CoffeeSchool.png',

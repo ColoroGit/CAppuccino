@@ -61,13 +61,29 @@ class DatabaseHelper {
          )''');
   }
 
-  // Inserting and updating a RECEPIE **************
-  Future<Recepie> upsertRecepie(Recepie recepie) async {
+  Future<Recepie> insertRecepie(Recepie recepie) async {
     Database db = await instance.database;
-    var count = Sqflite.firstIntValue(await db.rawQuery(
-        "SELECT COUNT(*) FROM recepies WHERE title = ?", [recepie.title]));
+    await db.insert(
+      "dates",
+      recepie.dateOfCreation.toMap(),
+    );
+    recepie.id = await db.insert(
+      "recepies",
+      recepie.toMap(),
+    );
 
-    if (count == 0) {
+    //Falta insertar la imágen
+
+    return recepie;
+  }
+
+  // Inserting and updating a RECEPIE **************
+  Future<Recepie> updateRecepie(Recepie recepie) async {
+    Database db = await instance.database;
+    var count = Sqflite.firstIntValue(await db
+        .rawQuery("SELECT COUNT(*) FROM recepies WHERE id = ?", [recepie.id]));
+
+    if (count != 0) {
       await db.insert(
         "dates",
         recepie.dateOfCreation.toMap(),
@@ -77,19 +93,9 @@ class DatabaseHelper {
         recepie.toMap(),
       );
     } else {
-      await db.update(
-        "dates",
-        recepie.dateOfCreation.toMap(),
-        where: "id = ?",
-        whereArgs: [recepie.dateOfCreation.id],
-      );
-      await db.update(
-        "recepies",
-        recepie.toMap(),
-        where: "id = ?",
-        whereArgs: [recepie.id],
-      );
+      print("Error, this recepie doesn't exist");
     }
+
     return recepie;
   }
 
@@ -146,7 +152,7 @@ class DatabaseHelper {
       List<Map> date = await db.query(
         "dates",
         where: "id = ?",
-        whereArgs: res['dateOfCreation'],
+        whereArgs: [res['dateOfCreation']],
       );
       Recepie r = Recepie.fromDB(res, date[0]);
       recepies.add(r);

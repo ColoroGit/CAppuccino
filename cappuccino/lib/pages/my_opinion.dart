@@ -10,7 +10,7 @@ class MyOpinion extends StatefulWidget {
 
 class _MyOpinionState extends State<MyOpinion> {
   List<Question> questions = List.empty(growable: true);
-  var values = <int>[];
+  var values = List.filled(9, 0);
 
   loadQuestions() {
     Question.loadQuestions().then((value) {
@@ -48,7 +48,6 @@ class _MyOpinionState extends State<MyOpinion> {
 
   getQuestions() {
     var qBanners = <Widget>[];
-    values = List.filled(questions.length, 0);
 
     for (int i = 0; i < questions.length; i++) {
       qBanners.add(
@@ -128,6 +127,23 @@ class _MyOpinionState extends State<MyOpinion> {
         ),
       );
     }
+
+    qBanners.add(Padding(
+      padding: const EdgeInsets.only(bottom: 20.0, left: 100, right: 100),
+      child: ElevatedButton(
+          style: const ButtonStyle(
+            backgroundColor:
+                WidgetStatePropertyAll(Color.fromARGB(250, 168, 93, 48)),
+          ),
+          onPressed: () {/*Enviar correo*/},
+          child: const Text(
+            "Enviar",
+            style: TextStyle(
+              color: Color.fromARGB(250, 236, 204, 180),
+              fontSize: 15,
+            ),
+          )),
+    ));
 
     return qBanners;
   }

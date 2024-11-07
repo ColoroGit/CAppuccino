@@ -1,13 +1,20 @@
+import 'package:camera/camera.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
+
+  runApp(MyApp(camera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.camera});
+
+  final CameraDescription camera;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Lucida',
       ),
-      home: const Home(),
+      home: Home(camera: camera),
     );
   }
 }

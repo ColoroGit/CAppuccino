@@ -1,19 +1,22 @@
+import 'package:camera/camera.dart';
 import 'package:cappuccino/models/recepie.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/pages/my_recepies.dart';
-// import 'package:cappuccino/utils/database_helper.dart';
+import 'package:cappuccino/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class MyBarista extends StatefulWidget {
-  const MyBarista({super.key});
+  const MyBarista({super.key, required this.camera});
+
+  final CameraDescription camera;
 
   @override
   State<StatefulWidget> createState() => _MyBaristaState();
 }
 
 class _MyBaristaState extends State<MyBarista> {
-  // DatabaseHelper db = DatabaseHelper.instance;
+  DatabaseHelper db = DatabaseHelper.instance;
   List<Recepie> br = [];
 
   loadBaristaRecepies() {
@@ -114,7 +117,8 @@ class _MyBaristaState extends State<MyBarista> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyRecepies()));
+                          builder: (context) =>
+                              MyRecepies(camera: widget.camera)));
                 },
                 icon: Image.asset(
                   'assets/images/Search.png',
@@ -129,8 +133,12 @@ class _MyBaristaState extends State<MyBarista> {
                 ),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Home(
+                                camera: widget.camera,
+                              )));
                 },
               ),
               IconButton(
@@ -266,7 +274,13 @@ class _MyBaristaState extends State<MyBarista> {
                       children: [
                         FloatingActionButton.small(
                           onPressed: () {
-                            /*pasar a mis recetas, guardar en base de datos*/
+                            db.insertRecepie(br[i]);
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => const Dialog(
+                                child: Text("Receta Añadida"),
+                              ),
+                            );
                           },
                           child: const Icon(Icons.add),
                         ),

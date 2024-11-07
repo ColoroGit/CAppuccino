@@ -61,7 +61,7 @@ class Recepie {
       title: map['title'],
       timeOfPrep: map['timeOfPrep'],
       dateOfCreation: Date.fromJSON(d),
-      ingredients: map['ingedients'],
+      ingredients: map['ingredients'],
       products: map['products'],
       steps: map['steps'],
     );
