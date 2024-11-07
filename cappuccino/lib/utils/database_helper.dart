@@ -40,7 +40,7 @@ class DatabaseHelper {
           ingredients TEXT NOT NULL,
           products TEXT NOT NULL,
           steps TEXT NOT NULL,
-          timesPrepared TEXT NOT NULL,   
+          timesPrepared INTEGER NOT NULL,   
           FOREIGN KEY (dateOfCreation) REFERENCES dates (id)                  
            ON DELETE NO ACTION ON UPDATE NO ACTION
 
@@ -100,20 +100,22 @@ class DatabaseHelper {
       captions: captions,
     );
 
-    var dID = await db.insert(
+    r.dateOfCreation.id = await db.insert(
       "dates",
       br.dateOfCreation.toMap(),
     );
 
     r.id = await db.insert(
       "recepies",
-      r.toMap(dID),
+      r.toMap(r.dateOfCreation.id),
     );
 
-    await db.insert(
+    r.captions[0].id = await db.insert(
       "captions",
       br.mainCaption.toMap(r.id),
     );
+
+    r.captions[0].recepieId = r.id;
 
     return r;
   }
@@ -123,6 +125,8 @@ class DatabaseHelper {
     Database db = await instance.database;
     var count = Sqflite.firstIntValue(await db
         .rawQuery("SELECT COUNT(*) FROM recepies WHERE id = ?", [recepie.id]));
+
+    recepie.dateOfCreation.id;
 
     if (count != 0) {
       await db.update(
@@ -247,6 +251,6 @@ class DatabaseHelper {
   Future<int> deleteRecepie(Recepie r) async {
     Database db = await instance.database;
     await db.delete("dates", where: "id = ?", whereArgs: [r.dateOfCreation.id]);
-    return await db.delete("recepie", where: "id = ?", whereArgs: [r.id]);
+    return await db.delete("recepies", where: "id = ?", whereArgs: [r.id]);
   }
 }

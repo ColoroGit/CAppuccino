@@ -31,7 +31,7 @@ class BRecepie {
       ingredients: map['ingredients'],
       products: map['products'],
       steps: map['steps'],
-      mainCaption: Caption.fromMap(map),
+      mainCaption: Caption.fromJSON(map),
     );
     return br;
   }

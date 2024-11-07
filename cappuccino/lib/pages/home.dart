@@ -4,6 +4,7 @@ import 'package:cappuccino/pages/my_barista.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/pages/my_recepies.dart';
 import 'package:cappuccino/utils/database_helper.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -158,112 +159,269 @@ class _HomeState extends State<Home> {
     final banners = <Widget>[];
 
     for (int i = 0; i < recepies.length; i++) {
+      List<Image> imagesCarousel = List.empty(growable: true);
+
+      for (int j = 0; j < recepies[i].captions.length; j++) {
+        imagesCarousel.add(Image.asset(recepies[i].captions[j].caption));
+      }
+
       banners.add(
         TextButton(
           onPressed: () => showDialog<String>(
             context: context,
-            builder: (BuildContext context) => Dialog(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                ),
-              ),
-              backgroundColor: const Color.fromARGB(255, 206, 140, 92),
-              surfaceTintColor: const Color.fromARGB(250, 66, 25, 8),
-              child: ListView(
-                children: [
-                  // falta botón X
-                  // carrusel de imágenes?
-                  Image.asset(recepies[i].captions[0].caption),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 10,
-                      bottom: 10,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          recepies[i].title,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          'prep time: ${recepies[i].timeOfPrep} mins',
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        Text(
-                          'date of creation: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Ingredients',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          recepies[i].ingredients,
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Products',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          recepies[i].products,
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          'Steps',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(250, 66, 25, 8),
-                          ),
-                        ),
-                        Text(
-                          recepies[i].steps,
-                          style: const TextStyle(
-                            color: Color.fromARGB(250, 66, 25, 8),
-                            fontFamily: 'Sitka',
-                          ),
-                        ),
-                      ],
+            builder: (context) {
+              return StatefulBuilder(builder: (context, setState) {
+                return Dialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
                     ),
                   ),
-                ],
-              ),
-            ),
+                  backgroundColor: const Color.fromARGB(255, 206, 140, 92),
+                  surfaceTintColor: const Color.fromARGB(250, 66, 25, 8),
+                  child: Stack(
+                    children: [
+                      ListView(
+                        children: [
+                          // falta botón X
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          CarouselSlider(
+                            items: imagesCarousel,
+                            options: CarouselOptions(
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              enableInfiniteScroll: true,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 10.0,
+                              right: 10,
+                              bottom: 10,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  recepies[i].title,
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                  ),
+                                ),
+                                Text(
+                                  'Prep Time: ${recepies[i].timeOfPrep} mins',
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                    fontFamily: 'Sitka',
+                                  ),
+                                ),
+                                Text(
+                                  'Date of Creation: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                    fontFamily: 'Sitka',
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Times Prepared: ",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(250, 66, 25, 8),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          recepies[i].timesPrepared--;
+                                        });
+                                        db.updateRecepie(recepies[
+                                            i]); //maybe move to disable or something
+                                      },
+                                      icon: const Icon(
+                                        Icons.remove,
+                                        color: Color.fromARGB(250, 66, 25, 8),
+                                      ),
+                                    ),
+                                    Text("${recepies[i].timesPrepared}"),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          recepies[i].timesPrepared++;
+                                        });
+                                        db.updateRecepie(recepies[
+                                            i]); //maybe move to disable or something
+                                      },
+                                      icon: const Icon(
+                                        Icons.add,
+                                        color: Color.fromARGB(250, 66, 25, 8),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  'Ingredients',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                  ),
+                                ),
+                                Text(
+                                  recepies[i].ingredients,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                    fontFamily: 'Sitka',
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  'Products',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                  ),
+                                ),
+                                Text(
+                                  recepies[i].products,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                    fontFamily: 'Sitka',
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  'Steps',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                  ),
+                                ),
+                                Text(
+                                  recepies[i].steps,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(250, 66, 25, 8),
+                                    fontFamily: 'Sitka',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        left: 230,
+                        top: 2,
+                        child: Column(
+                          children: [
+                            FloatingActionButton.small(
+                              onPressed: () {},
+                              child: const Icon(Icons.share),
+                            ),
+                            FloatingActionButton.small(
+                              onPressed: () {},
+                              child: const Icon(Icons.edit),
+                            ),
+                            FloatingActionButton.small(
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: SizedBox(
+                                    height: 150,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(50),
+                                          bottomRight: Radius.circular(50),
+                                        ),
+                                        color:
+                                            Color.fromARGB(255, 206, 140, 92),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "¿Segur@ que deseas eliminar\nesta receta?",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  250, 66, 25, 8),
+                                              fontFamily: 'Sitka',
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () async {
+                                                  await db.deleteRecepie(
+                                                      recepies[i]);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Home(
+                                                                  camera: widget
+                                                                      .camera)));
+                                                },
+                                                child: const Text(
+                                                  "Si",
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        250, 66, 25, 8),
+                                                    fontFamily: 'Sitka',
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  "No",
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        250, 66, 25, 8),
+                                                    fontFamily: 'Sitka',
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              child: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              });
+            },
           ),
           child: Container(
             margin: const EdgeInsets.all(5),

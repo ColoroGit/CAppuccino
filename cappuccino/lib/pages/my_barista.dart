@@ -157,8 +157,6 @@ class _MyBaristaState extends State<MyBarista> {
 
   getBaristaRecepiesBanners() {
     var banners = <Widget>[];
-    double top = 2;
-    double left = 230;
 
     for (int i = 0; i < br.length; i++) {
       banners.add(
@@ -268,8 +266,8 @@ class _MyBaristaState extends State<MyBarista> {
                     ],
                   ),
                   Positioned(
-                    left: left,
-                    top: top,
+                    left: 230,
+                    top: 2,
                     child: Column(
                       children: [
                         FloatingActionButton.small(
@@ -277,8 +275,25 @@ class _MyBaristaState extends State<MyBarista> {
                             db.insertBRecepie(br[i]);
                             showDialog<String>(
                               context: context,
-                              builder: (BuildContext context) => const Dialog(
-                                child: Text("Receta Añadida"),
+                              builder: (BuildContext context) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: SizedBox(
+                                  height: 30,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(50),
+                                        bottomRight: Radius.circular(50),
+                                      ),
+                                      color: Color.fromARGB(255, 206, 140, 92),
+                                    ),
+                                    child: const Text(
+                                      "Receta Añadida",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
                               ),
                             );
                           },

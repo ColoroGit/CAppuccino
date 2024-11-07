@@ -1,10 +1,10 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:cappuccino/models/caption.dart';
 import 'package:cappuccino/models/date.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
 class Recepie {
-  late int id;
+  int id;
   String title;
   int timeOfPrep;
   Date dateOfCreation;
@@ -26,7 +26,7 @@ class Recepie {
     this.timesPrepared = 0,
   });
 
-  Map<String, dynamic> toMap(int? dID) {
+  Map<String, dynamic> toMap(int dID) {
     return {
       // 'id': id, //is this necesary?
       'title': title,
@@ -39,52 +39,53 @@ class Recepie {
     };
   }
 
-  // Este es para crear una receta desde un JSON
-  static Recepie fromJSON(Map map) {
-    List<Caption> captions = List.empty(growable: true);
+  // // Este es para crear una receta desde un JSON
+  // static Recepie fromJSON(Map map) {
+  //   List<Caption> captions = List.empty(growable: true);
 
-    captions.add(Caption.fromMap(map['caption']));
+  //   captions.add(Caption.fromMap(map['caption']));
 
-    Recepie recepie = Recepie(
-      id: map['id'],
-      title: map['title'],
-      timeOfPrep: map['timeOfPrep'],
-      dateOfCreation: Date.fromJSON(map['dateOfCreation']),
-      ingredients: map['ingredients'],
-      products: map['products'],
-      steps: map['steps'],
-      timesPrepared: map['timesPrepared'],
-      captions: captions,
-    );
-    return recepie;
-  }
+  //   Recepie recepie = Recepie(
+  //     id: map['id'],
+  //     title: map['title'],
+  //     timeOfPrep: map['timeOfPrep'],
+  //     dateOfCreation: Date.fromJSON(map['dateOfCreation']),
+  //     ingredients: map['ingredients'],
+  //     products: map['products'],
+  //     steps: map['steps'],
+  //     timesPrepared: map['timesPrepared'],
+  //     captions: captions,
+  //   );
+  //   return recepie;
+  // }
 
   //Este es para traer una receta desde la base de datos
   static Recepie fromDB(Map map, Map d, List<Map> cs) {
     List<Caption> captions = List.empty(growable: true);
 
     for (var c in cs) {
-      captions.add(Caption.fromMap(c));
+      captions.add(Caption.fromDB(c));
     }
 
     return Recepie(
       id: map['id'],
       title: map['title'],
       timeOfPrep: map['timeOfPrep'],
-      dateOfCreation: Date.fromJSON(d),
+      dateOfCreation: Date.fromDB(d),
       ingredients: map['ingredients'],
       products: map['products'],
       steps: map['steps'],
+      timesPrepared: map['timesPrepared'],
       captions: captions,
     );
   }
 
   // Para cargar recetas desde un JSON. Esto debería ser llamado desde mi barista
-  static Future<List<Recepie>> loadRecepies() async {
-    final jsonString = await rootBundle.loadString('assets/json/recepies.json');
-    final List<dynamic> jsonDecoded = jsonDecode(jsonString) as List<dynamic>;
-    return jsonDecoded
-        .map((dynamic item) => Recepie.fromJSON(item as Map<String, dynamic>))
-        .toList();
-  }
+  // static Future<List<Recepie>> loadRecepies() async {
+  //   final jsonString = await rootBundle.loadString('assets/json/recepies.json');
+  //   final List<dynamic> jsonDecoded = jsonDecode(jsonString) as List<dynamic>;
+  //   return jsonDecoded
+  //       .map((dynamic item) => Recepie.fromJSON(item as Map<String, dynamic>))
+  //       .toList();
+  // }
 }
