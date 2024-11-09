@@ -1,5 +1,6 @@
 import 'package:cappuccino/models/question.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class MyOpinion extends StatefulWidget {
   const MyOpinion({super.key});
@@ -11,6 +12,10 @@ class MyOpinion extends StatefulWidget {
 class _MyOpinionState extends State<MyOpinion> {
   List<Question> questions = List.empty(growable: true);
   var values = List.filled(9, 0);
+  String name = "";
+  String relation = "";
+  int groupValue = 0;
+  String group = "";
 
   loadQuestions() {
     Question.loadQuestions().then((value) {
@@ -128,6 +133,151 @@ class _MyOpinionState extends State<MyOpinion> {
       );
     }
 
+    //datos de la persona
+    qBanners.add(Column(
+      children: [
+        const Text(
+          "Ingresa tu Nombre y Apellido",
+          style: TextStyle(
+            color: Color.fromARGB(250, 66, 25, 8),
+            fontFamily: 'Sitka',
+            fontSize: 15,
+          ),
+        ),
+        SizedBox(
+          width: 300,
+          child: TextField(
+            style: const TextStyle(
+              fontFamily: 'Sitka',
+              color: Color.fromARGB(250, 66, 25, 8),
+            ),
+            onChanged: (s) {
+              name = s;
+            },
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Color.fromARGB(250, 236, 204, 180),
+              labelText: 'Nombre y Apellido',
+              labelStyle: TextStyle(
+                color: Color.fromARGB(250, 66, 25, 8),
+                fontFamily: 'Sitka',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          "¿Cuál es tu relación con Tomás Concha? (Madre, Padre, Amigo, Colega, etc.)",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color.fromARGB(250, 66, 25, 8),
+            fontFamily: 'Sitka',
+            fontSize: 15,
+          ),
+        ),
+        SizedBox(
+          width: 300,
+          child: TextField(
+            style: const TextStyle(
+              fontFamily: 'Sitka',
+              color: Color.fromARGB(250, 66, 25, 8),
+            ),
+            onChanged: (s) {
+              relation = s;
+            },
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Color.fromARGB(250, 236, 204, 180),
+              labelText: 'Relación',
+              labelStyle: TextStyle(
+                color: Color.fromARGB(250, 66, 25, 8),
+                fontFamily: 'Sitka',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          "¿A cuál de estos 3 grupos perteneces?",
+          style: TextStyle(
+            color: Color.fromARGB(250, 66, 25, 8),
+            fontFamily: 'Sitka',
+            fontSize: 15,
+          ),
+        ),
+        ListTile(
+          title: const Text(
+            'Estoy cursando Dispositivos Móviles',
+            style: TextStyle(
+              color: Color.fromARGB(250, 66, 25, 8),
+              fontFamily: 'Sitka',
+              fontSize: 15,
+            ),
+          ),
+          leading: Radio<int>(
+            value: 1,
+            groupValue: groupValue,
+            onChanged: (value) {
+              setState(() {
+                groupValue = value!;
+              });
+              group = 'estoy cursando Dispositivos Móviles';
+            },
+          ),
+        ),
+        ListTile(
+          title: const Text(
+            'estudio IDVRV',
+            style: TextStyle(
+              color: Color.fromARGB(250, 66, 25, 8),
+              fontFamily: 'Sitka',
+              fontSize: 15,
+            ),
+          ),
+          leading: Radio<int>(
+            value: 2,
+            groupValue: groupValue,
+            onChanged: (value) {
+              setState(() {
+                groupValue = value!;
+              });
+              group = 'Estudio IDVRV';
+            },
+          ),
+        ),
+        ListTile(
+          title: const Text(
+            'no tengo conocimientos técnicos de Pogramación ni Diseño',
+            style: TextStyle(
+              color: Color.fromARGB(250, 66, 25, 8),
+              fontFamily: 'Sitka',
+              fontSize: 15,
+            ),
+          ),
+          leading: Radio<int>(
+            value: 3,
+            groupValue: groupValue,
+            onChanged: (value) {
+              setState(() {
+                groupValue = value!;
+              });
+              group =
+                  'No tengo conocimientos técnicos de Pogramación ni Diseño';
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
+    ));
+
     qBanners.add(Padding(
       padding: const EdgeInsets.only(bottom: 20.0, left: 100, right: 100),
       child: ElevatedButton(
@@ -135,7 +285,24 @@ class _MyOpinionState extends State<MyOpinion> {
             backgroundColor:
                 WidgetStatePropertyAll(Color.fromARGB(250, 168, 93, 48)),
           ),
-          onPressed: () {/*Enviar correo*/},
+          onPressed: () async {
+            var response = List.empty(growable: true);
+
+            for (int i = 0; i < questions.length; i++) {
+              response.add(" - ${questions[i].title}: ${values[i]}\n\n");
+            }
+            var r = response.join();
+
+            final Email email = Email(
+              body:
+                  'Hola!!\n\nSoy tu $relation $name [ya sabes que $group ;)], y esta es mi opinión sobre tu aplicación!\n\n $r **Aquí puedes agregar algún mensaje extra, sino borra esto**',
+              subject: 'EVALUACIÓN CAPPUCCINO',
+              recipients: ['tomasconcha31@gmail.com'],
+              isHTML: false,
+            );
+
+            await FlutterEmailSender.send(email).then((v) {});
+          },
           child: const Text(
             "Enviar",
             style: TextStyle(

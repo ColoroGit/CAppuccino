@@ -1,19 +1,21 @@
 class Date {
   int id;
+  int recepieId;
   int year;
   int month;
   int day;
 
   Date({
     required this.id,
+    required this.recepieId,
     required this.year,
     required this.month,
     required this.day,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(int rID) {
     return {
-      // 'id': id, //is this necesary?
+      'recepieId': rID,
       'year': year,
       'month': month,
       'day': day,
@@ -23,6 +25,7 @@ class Date {
   static Date fromJSON(Map map) {
     return Date(
       id: -1,
+      recepieId: -1,
       year: map['year'],
       month: map['month'],
       day: map['day'],
@@ -32,6 +35,7 @@ class Date {
   static Date fromDB(Map map) {
     return Date(
       id: map['id'],
+      recepieId: map['recepieId'],
       year: map['year'],
       month: map['month'],
       day: map['day'],

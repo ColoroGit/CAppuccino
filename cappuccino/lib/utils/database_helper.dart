@@ -36,21 +36,20 @@ class DatabaseHelper {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT NOT NULL,
           timeOfPrep INTEGER NOT NULL,
-          dateOfCreation INTEGER NOT NULL,
           ingredients TEXT NOT NULL,
           products TEXT NOT NULL,
           steps TEXT NOT NULL,
-          timesPrepared INTEGER NOT NULL,   
-          FOREIGN KEY (dateOfCreation) REFERENCES dates (id)                  
-           ON DELETE NO ACTION ON UPDATE NO ACTION
-
+          timesPrepared INTEGER NOT NULL
          )''');
     await db.execute('''
         CREATE TABLE dates (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          recepieId INTEGER NOT NULL,    
           year INTEGER NOT NULL,
           month INTEGER NOT NULL,
-          day INTEGER NOT NULL
+          day INTEGER NOT NULL,
+          FOREIGN KEY (recepieId) REFERENCES recepies (id)                  
+           ON DELETE CASCADE ON UPDATE CASCADE
         )''');
     await db.execute('''
         CREATE TABLE captions (
@@ -58,19 +57,22 @@ class DatabaseHelper {
           recepieId INTEGER NOT NULL,    
           caption TEXT NOT NULL,   
           FOREIGN KEY (recepieId) REFERENCES recepies (id)                  
-           ON DELETE CASCADE ON UPDATE NO ACTION
+           ON DELETE CASCADE ON UPDATE CASCADE
          )''');
   }
 
+  // Necesita devolver una receta?
   Future<Recepie> insertRecepie(Recepie recepie) async {
     Database db = await instance.database;
-    var dID = await db.insert(
-      "dates",
-      recepie.dateOfCreation.toMap(),
-    );
+
     recepie.id = await db.insert(
       "recepies",
-      recepie.toMap(dID),
+      recepie.toMap(),
+    );
+
+    await db.insert(
+      "dates",
+      recepie.dateOfCreation.toMap(recepie.id),
     );
 
     for (var c in recepie.captions) {
@@ -97,25 +99,28 @@ class DatabaseHelper {
       ingredients: br.ingredients,
       products: br.products,
       steps: br.steps,
+      timesPrepared: br.timesPrepared,
       captions: captions,
+    );
+
+    var rID = await db.insert(
+      "recepies",
+      br.toMap(),
     );
 
     r.dateOfCreation.id = await db.insert(
       "dates",
-      br.dateOfCreation.toMap(),
+      br.dateOfCreation.toMap(rID),
     );
 
-    r.id = await db.insert(
-      "recepies",
-      r.toMap(r.dateOfCreation.id),
-    );
+    r.dateOfCreation.recepieId = rID;
 
     r.captions[0].id = await db.insert(
       "captions",
-      br.mainCaption.toMap(r.id),
+      br.mainCaption.toMap(rID),
     );
 
-    r.captions[0].recepieId = r.id;
+    r.captions[0].recepieId = rID;
 
     return r;
   }
@@ -126,32 +131,33 @@ class DatabaseHelper {
     var count = Sqflite.firstIntValue(await db
         .rawQuery("SELECT COUNT(*) FROM recepies WHERE id = ?", [recepie.id]));
 
-    recepie.dateOfCreation.id;
-
     if (count != 0) {
-      await db.update(
-        "dates",
-        recepie.dateOfCreation.toMap(),
-        where: "id = ?",
-        whereArgs: [recepie.dateOfCreation.id],
-      );
-
       recepie.id = await db.update(
         "recepies",
-        recepie.toMap(recepie.dateOfCreation.id),
+        recepie.toMap(),
         where: "id = ?",
         whereArgs: [recepie.id],
+      );
+
+      await db.update(
+        "dates",
+        recepie.dateOfCreation.toMap(recepie.id),
+        where: "RecepieId = ?",
+        whereArgs: [recepie.id],
+        // conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
       for (var c in recepie.captions) {
         await db.update(
           "captions",
           c.toMap(recepie.id),
-          where: "id = ?",
+          where: "RecepieId = ?",
           whereArgs: [recepie.id],
+          // conflictAlgorithm: ConflictAlgorithm.replace,
         );
       }
     } else {
+      // ignore: avoid_print
       print("Error, this recepie doesn't exist");
     }
 
@@ -182,25 +188,25 @@ class DatabaseHelper {
   // }
 
   // fetch a single RECEPIE ***************
-  Future<Recepie> fetchRecepie(Recepie r) async {
+  Future<Recepie> fetchRecepie(int rID) async {
     Database db = await instance.database;
 
     List<Map> results = await db.query(
       "recepies",
       where: "id = ?",
-      whereArgs: [r.id],
+      whereArgs: [rID],
     );
 
     List<Map> dates = await db.query(
       "dates",
-      where: "id = ?",
-      whereArgs: [r.dateOfCreation.id],
+      where: "RecepieId = ?",
+      whereArgs: [rID],
     );
 
     List<Map> captions = await db.query(
       "captions",
       where: "recepieId = ?",
-      whereArgs: [r.id],
+      whereArgs: [rID],
     );
 
     Recepie recepie = Recepie.fromDB(results[0], dates[0], captions);
@@ -216,8 +222,8 @@ class DatabaseHelper {
     for (var res in results) {
       List<Map> date = await db.query(
         "dates",
-        where: "id = ?",
-        whereArgs: [res['dateOfCreation']],
+        where: "recepieId = ?",
+        whereArgs: [res['id']],
       );
       List<Map> captions = await db.query(
         "captions",
@@ -250,7 +256,6 @@ class DatabaseHelper {
   // DELETE RECEPIE
   Future<int> deleteRecepie(Recepie r) async {
     Database db = await instance.database;
-    await db.delete("dates", where: "id = ?", whereArgs: [r.dateOfCreation.id]);
     return await db.delete("recepies", where: "id = ?", whereArgs: [r.id]);
   }
 }

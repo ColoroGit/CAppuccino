@@ -1,6 +1,6 @@
 class Caption {
-  late int id;
-  late int recepieId;
+  int id;
+  int recepieId;
   String caption; //The file path to the stored picture
 
   Caption({
@@ -11,7 +11,6 @@ class Caption {
 
   Map<String, dynamic> toMap(int rID) {
     return {
-      // 'id': id, //is this necesary?
       'recepieId': rID,
       'caption': caption,
     };

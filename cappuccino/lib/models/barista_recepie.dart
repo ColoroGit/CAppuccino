@@ -10,6 +10,7 @@ class BRecepie {
   String ingredients;
   String products;
   String steps;
+  int timesPrepared;
   Caption mainCaption;
 
   BRecepie({
@@ -19,6 +20,7 @@ class BRecepie {
     required this.ingredients,
     required this.products,
     required this.steps,
+    required this.timesPrepared,
     required this.mainCaption,
   });
 
@@ -31,9 +33,21 @@ class BRecepie {
       ingredients: map['ingredients'],
       products: map['products'],
       steps: map['steps'],
+      timesPrepared: map['timesPrepared'],
       mainCaption: Caption.fromJSON(map),
     );
     return br;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'timeOfPrep': timeOfPrep,
+      'ingredients': ingredients,
+      'products': products,
+      'steps': steps,
+      'timesPrepared': timesPrepared,
+    };
   }
 
   // Para cargar recetas desde un JSON. Esto debería ser llamado desde mi barista
