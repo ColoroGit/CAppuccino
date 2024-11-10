@@ -176,7 +176,6 @@ class _MyBaristaState extends State<MyBarista> {
                 children: [
                   ListView(
                     children: [
-                      // falta botón X
                       Image.asset(br[i].mainCaption.caption),
                       const SizedBox(
                         height: 15,
@@ -200,14 +199,14 @@ class _MyBaristaState extends State<MyBarista> {
                               ),
                             ),
                             Text(
-                              'prep time: ${br[i].timeOfPrep} mins',
+                              'Tiempo de prep.: ${br[i].timeOfPrep} mins',
                               style: const TextStyle(
                                 color: Color.fromARGB(250, 66, 25, 8),
                                 fontFamily: 'Sitka',
                               ),
                             ),
                             Text(
-                              'date of creation: ${br[i].dateOfCreation.day}/${br[i].dateOfCreation.month}/${br[i].dateOfCreation.year}',
+                              'Fecha de creación: ${br[i].dateOfCreation.day}/${br[i].dateOfCreation.month}/${br[i].dateOfCreation.year}',
                               style: const TextStyle(
                                 color: Color.fromARGB(250, 66, 25, 8),
                                 fontFamily: 'Sitka',
@@ -215,7 +214,7 @@ class _MyBaristaState extends State<MyBarista> {
                             ),
                             const SizedBox(height: 5),
                             const Text(
-                              'Ingredients',
+                              'Ingredientes',
                               style: TextStyle(
                                 fontSize: 25,
                                 color: Color.fromARGB(250, 66, 25, 8),
@@ -230,7 +229,7 @@ class _MyBaristaState extends State<MyBarista> {
                             ),
                             const SizedBox(height: 5),
                             const Text(
-                              'Products',
+                              'Productos',
                               style: TextStyle(
                                 fontSize: 25,
                                 color: Color.fromARGB(250, 66, 25, 8),
@@ -247,7 +246,7 @@ class _MyBaristaState extends State<MyBarista> {
                               height: 5,
                             ),
                             const Text(
-                              'Steps',
+                              'Pasos',
                               style: TextStyle(
                                 fontSize: 25,
                                 color: Color.fromARGB(250, 66, 25, 8),

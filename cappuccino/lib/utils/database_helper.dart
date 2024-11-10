@@ -132,7 +132,7 @@ class DatabaseHelper {
         .rawQuery("SELECT COUNT(*) FROM recepies WHERE id = ?", [recepie.id]));
 
     if (count != 0) {
-      recepie.id = await db.update(
+      await db.update(
         "recepies",
         recepie.toMap(),
         where: "id = ?",

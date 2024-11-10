@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:camera/camera.dart';
 import 'package:cappuccino/models/recepie.dart';
@@ -9,6 +7,7 @@ import 'package:cappuccino/pages/my_recepies.dart';
 import 'package:cappuccino/utils/database_helper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -25,6 +24,40 @@ class _HomeState extends State<Home> {
   List<int> recentRecepiesIDs = List.filled(3, -1);
   List<Recepie> recepies = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedValue();
+  }
+
+  // @override
+  // void deactivate() {
+  //   //update all recepies?
+  //   super.deactivate();
+  // }
+
+  // Function to load saved value from SharedPreferences
+  void _loadSavedValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    recepies = [];
+
+    if (prefs.getInt("id0") == null) {
+      prefs.setInt("id0", -1);
+      prefs.setInt("id1", -1);
+      prefs.setInt("id2", -1);
+    }
+
+    setState(() {
+      for (int i = 0; i < 3; i++) {
+        // ignore: unnecessary_brace_in_string_interps
+        recentRecepiesIDs[i] = prefs.getInt("id${i}") ?? -1;
+      }
+    });
+
+    refreshRecepies();
+  }
+
   refreshRecepies() async {
     for (int i = 0; i < 3; i++) {
       var rrid = recentRecepiesIDs[i];
@@ -37,43 +70,6 @@ class _HomeState extends State<Home> {
         recepies.add(r);
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSavedValue();
-  }
-
-  @override
-  void deactivate() {
-    //update all recepies?
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    //update all recepies?
-    super.dispose();
-  }
-
-  // Function to load saved value from SharedPreferences
-  void _loadSavedValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getInt("id0") == null) {
-      prefs.setInt("id0", -1);
-      prefs.setInt("id1", -1);
-      prefs.setInt("id2", -1);
-    }
-
-    setState(() {
-      for (int i = 0; i < 3; i++) {
-        recentRecepiesIDs[i] = prefs.getInt("id${i}") ?? -1;
-      }
-    });
-
-    refreshRecepies();
   }
 
   @override
@@ -142,7 +138,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: recepies.isEmpty
             ? const Text(
-                'Todavía no has creado Recetas',
+                'Tus recetas más recientes aparecerán aquí',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 30,
@@ -224,9 +220,10 @@ class _HomeState extends State<Home> {
             arrangeRecentRecepies(recepies[i]);
             showDialogSuper<String>(
               context: context,
-              onDismissed: (v) {
+              onDismissed: (v) async {
                 if (v == null) {
-                  db.updateRecepie(recepies[i]);
+                  await db.updateRecepie(recepies[i]);
+                  _loadSavedValue();
                 }
               },
               builder: (context) {
@@ -244,7 +241,6 @@ class _HomeState extends State<Home> {
                       children: [
                         ListView(
                           children: [
-                            // falta botón X
                             const SizedBox(
                               height: 15,
                             ),
@@ -278,14 +274,14 @@ class _HomeState extends State<Home> {
                                     ),
                                   ),
                                   Text(
-                                    'Prep Time: ${recepies[i].timeOfPrep} mins',
+                                    'Tiempo de prep.: ${recepies[i].timeOfPrep} mins',
                                     style: const TextStyle(
                                       color: Color.fromARGB(250, 66, 25, 8),
                                       fontFamily: 'Sitka',
                                     ),
                                   ),
                                   Text(
-                                    'Date of Creation: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
+                                    'Fecha de creación: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
                                     style: const TextStyle(
                                       color: Color.fromARGB(250, 66, 25, 8),
                                       fontFamily: 'Sitka',
@@ -294,7 +290,7 @@ class _HomeState extends State<Home> {
                                   Row(
                                     children: [
                                       const Text(
-                                        "Times Prepared: ",
+                                        "Veces preparada: ",
                                         style: TextStyle(
                                           color: Color.fromARGB(250, 66, 25, 8),
                                         ),
@@ -326,7 +322,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   const SizedBox(height: 5),
                                   const Text(
-                                    'Ingredients',
+                                    'Ingredientes',
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color.fromARGB(250, 66, 25, 8),
@@ -341,7 +337,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   const SizedBox(height: 5),
                                   const Text(
-                                    'Products',
+                                    'Productos',
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color.fromARGB(250, 66, 25, 8),
@@ -358,7 +354,7 @@ class _HomeState extends State<Home> {
                                     height: 5,
                                   ),
                                   const Text(
-                                    'Steps',
+                                    'Pasos',
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color.fromARGB(250, 66, 25, 8),
@@ -382,7 +378,15 @@ class _HomeState extends State<Home> {
                           child: Column(
                             children: [
                               FloatingActionButton.small(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // List<XFile> pictures = [];
+                                  // for (var c in recepies[i].captions) {
+                                  //   pictures.add(XFile(c.caption));
+                                  // }
+                                  // No deja compartir archivos
+                                  Share.share(
+                                      "Admira mi súper receta de café!!\n\n${recepies[i].title}\nCreada el ${recepies[i].dateOfCreation.day} del ${recepies[i].dateOfCreation.month} del ${recepies[i].dateOfCreation.year}\n\nToma tan solo ${recepies[i].timeOfPrep} minutos hacerla, y yo ya la he hecho ${recepies[i].timesPrepared} veces\n\nIngredientes:\n\n${recepies[i].ingredients}\n\nProductos:\n\n${recepies[i].products}\n\nPasos:\n\n${recepies[i].steps}\n\nCuéntame qué te parece :D");
+                                },
                                 child: const Icon(Icons.share),
                               ),
                               FloatingActionButton.small(
@@ -424,24 +428,34 @@ class _HomeState extends State<Home> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 TextButton(
-                                                  onPressed: () async => await db
-                                                      .deleteRecepie(
-                                                          recepies[i])
-                                                      .then((v) {
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                Home(
-                                                                    camera: widget
-                                                                        .camera),
-                                                          ),
-                                                        );
-                                                      } as FutureOr<void>
-                                                          Function(int value)),
+                                                  onPressed: () async {
+                                                    await db.deleteRecepie(
+                                                        recepies[i]);
+                                                    var prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    prefs.setInt(
+                                                        "id0",
+                                                        prefs.getInt("id1")
+                                                            as int);
+                                                    prefs.setInt(
+                                                        "id1",
+                                                        prefs.getInt("id2")
+                                                            as int);
+                                                    prefs.setInt("id2", -1);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Home(
+                                                                camera: widget
+                                                                    .camera),
+                                                      ),
+                                                    );
+                                                  },
                                                   child: const Text(
                                                     "Si",
                                                     style: TextStyle(
@@ -520,6 +534,17 @@ class _HomeState extends State<Home> {
 
   arrangeRecentRecepies(Recepie r) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (r.id == prefs.getInt("id0")) {
+      return;
+    }
+
+    if (r.id == prefs.getInt("id1")) {
+      prefs.setInt("id1", prefs.getInt("id0") as int);
+      prefs.setInt("id0", r.id);
+
+      return;
+    }
+
     prefs.setInt("id2", prefs.getInt("id1") as int);
     prefs.setInt("id1", prefs.getInt("id0") as int);
     prefs.setInt("id0", r.id);

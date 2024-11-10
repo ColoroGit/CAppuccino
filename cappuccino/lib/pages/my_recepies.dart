@@ -1,14 +1,15 @@
-import 'dart:async';
-
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:camera/camera.dart';
+import 'package:cappuccino/models/date.dart';
 import 'package:cappuccino/models/recepie.dart';
+import 'package:cappuccino/pages/edit_recepie.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/my_barista.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/utils/database_helper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyRecepies extends StatefulWidget {
@@ -37,6 +38,18 @@ class _MyRecepiesState extends State<MyRecepies> {
     super.initState();
     refreshRecepies();
   }
+
+  // @override
+  // void deactivate() {
+  //   //update all recepies?
+  //   super.deactivate();
+  // }
+
+  // @override
+  // void setState(VoidCallback fn) {
+  //   refreshRecepies();
+  //   super.setState(fn);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +126,31 @@ class _MyRecepiesState extends State<MyRecepies> {
               )
             : ListView(children: getRecepiesBanners()),
       ),
-      floatingActionButton: IconButton(
-        onPressed: () {/*Crear receta de 0*/},
-        icon: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditRecepie(
+                camera: widget.camera,
+                recepie: Recepie(
+                    id: -1,
+                    title: "",
+                    timeOfPrep: 0,
+                    dateOfCreation:
+                        Date(id: -1, recepieId: -1, year: 0, month: 0, day: 0),
+                    ingredients: "",
+                    products: "",
+                    steps: "",
+                    captions: List.empty(growable: true),
+                    timesPrepared: 0),
+                pScreen: "myR",
+              ),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       persistentFooterButtons: [
         Container(
@@ -187,9 +222,9 @@ class _MyRecepiesState extends State<MyRecepies> {
             arrangeRecentRecepies(recepies[i]);
             showDialogSuper<String>(
               context: context,
-              onDismissed: (v) {
+              onDismissed: (v) async {
                 if (v == null) {
-                  db.updateRecepie(recepies[i]);
+                  await db.updateRecepie(recepies[i]);
                 }
               },
               builder: (context) {
@@ -207,7 +242,6 @@ class _MyRecepiesState extends State<MyRecepies> {
                       children: [
                         ListView(
                           children: [
-                            // falta botón X
                             const SizedBox(
                               height: 15,
                             ),
@@ -241,14 +275,14 @@ class _MyRecepiesState extends State<MyRecepies> {
                                     ),
                                   ),
                                   Text(
-                                    'Prep Time: ${recepies[i].timeOfPrep} mins',
+                                    'Tiempo de prep.: ${recepies[i].timeOfPrep} mins',
                                     style: const TextStyle(
                                       color: Color.fromARGB(250, 66, 25, 8),
                                       fontFamily: 'Sitka',
                                     ),
                                   ),
                                   Text(
-                                    'Date of Creation: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
+                                    'Fecha de creación: ${recepies[i].dateOfCreation.day}/${recepies[i].dateOfCreation.month}/${recepies[i].dateOfCreation.year}',
                                     style: const TextStyle(
                                       color: Color.fromARGB(250, 66, 25, 8),
                                       fontFamily: 'Sitka',
@@ -257,7 +291,7 @@ class _MyRecepiesState extends State<MyRecepies> {
                                   Row(
                                     children: [
                                       const Text(
-                                        "Times Prepared: ",
+                                        "Veces preparada: ",
                                         style: TextStyle(
                                           color: Color.fromARGB(250, 66, 25, 8),
                                         ),
@@ -289,7 +323,7 @@ class _MyRecepiesState extends State<MyRecepies> {
                                   ),
                                   const SizedBox(height: 5),
                                   const Text(
-                                    'Ingredients',
+                                    'Ingredientes',
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color.fromARGB(250, 66, 25, 8),
@@ -304,7 +338,7 @@ class _MyRecepiesState extends State<MyRecepies> {
                                   ),
                                   const SizedBox(height: 5),
                                   const Text(
-                                    'Products',
+                                    'Productos',
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color.fromARGB(250, 66, 25, 8),
@@ -321,7 +355,7 @@ class _MyRecepiesState extends State<MyRecepies> {
                                     height: 5,
                                   ),
                                   const Text(
-                                    'Steps',
+                                    'Pasos',
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color.fromARGB(250, 66, 25, 8),
@@ -345,11 +379,30 @@ class _MyRecepiesState extends State<MyRecepies> {
                           child: Column(
                             children: [
                               FloatingActionButton.small(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // List<XFile> pictures = [];
+                                  // for (var c in recepies[i].captions) {
+                                  //   pictures.add(XFile(c.caption));
+                                  // }
+                                  // No deja compartir archivos
+                                  Share.share(
+                                      "Admira mi súper receta de café!!\n\n${recepies[i].title}\nCreada el ${recepies[i].dateOfCreation.day} del ${recepies[i].dateOfCreation.month} del ${recepies[i].dateOfCreation.year}\n\nToma tan solo ${recepies[i].timeOfPrep} minutos hacerla, y yo ya la he hecho ${recepies[i].timesPrepared} veces\n\nIngredientes:\n\n${recepies[i].ingredients}\n\n Productos:\n\n${recepies[i].products}\n\n Pasos:\n\n${recepies[i].steps}\n\nCuéntame qué te parece :D");
+                                },
                                 child: const Icon(Icons.share),
                               ),
                               FloatingActionButton.small(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditRecepie(
+                                                camera: widget.camera,
+                                                recepie: recepies[i],
+                                                pScreen: "myR",
+                                              )));
+                                },
                                 child: const Icon(Icons.edit),
                               ),
                               FloatingActionButton.small(
@@ -387,21 +440,34 @@ class _MyRecepiesState extends State<MyRecepies> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 TextButton(
-                                                  onPressed: () async => await db
-                                                      .deleteRecepie(
-                                                          recepies[i])
-                                                      .then((v) {
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => Home(
-                                                                    camera: widget
-                                                                        .camera)));
-                                                      } as FutureOr<void>
-                                                          Function(int value)),
+                                                  onPressed: () async {
+                                                    await db.deleteRecepie(
+                                                        recepies[i]);
+                                                    var prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    prefs.setInt(
+                                                        "id0",
+                                                        prefs.getInt("id1")
+                                                            as int);
+                                                    prefs.setInt(
+                                                        "id1",
+                                                        prefs.getInt("id2")
+                                                            as int);
+                                                    prefs.setInt("id2", -1);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MyRecepies(
+                                                                camera: widget
+                                                                    .camera),
+                                                      ),
+                                                    );
+                                                  },
                                                   child: const Text(
                                                     "Si",
                                                     style: TextStyle(
@@ -481,6 +547,17 @@ class _MyRecepiesState extends State<MyRecepies> {
   arrangeRecentRecepies(Recepie r) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      if (r.id == prefs.getInt("id0")) {
+        return;
+      }
+
+      if (r.id == prefs.getInt("id1")) {
+        prefs.setInt("id1", prefs.getInt("id0") as int);
+        prefs.setInt("id0", r.id);
+
+        return;
+      }
+
       prefs.setInt("id2", prefs.getInt("id1") as int);
       prefs.setInt("id1", prefs.getInt("id0") as int);
       prefs.setInt("id0", r.id);
