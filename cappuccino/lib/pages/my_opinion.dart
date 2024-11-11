@@ -154,16 +154,6 @@ class _MyOpinionState extends State<MyOpinion> {
             onChanged: (s) {
               name = s;
             },
-            decoration: const InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(250, 236, 204, 180),
-              labelText: 'Nombre y Apellido',
-              labelStyle: TextStyle(
-                color: Color.fromARGB(250, 66, 25, 8),
-                fontFamily: 'Sitka',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
         ),
         const SizedBox(
@@ -188,16 +178,6 @@ class _MyOpinionState extends State<MyOpinion> {
             onChanged: (s) {
               relation = s;
             },
-            decoration: const InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(250, 236, 204, 180),
-              labelText: 'Relación',
-              labelStyle: TextStyle(
-                color: Color.fromARGB(250, 66, 25, 8),
-                fontFamily: 'Sitka',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
         ),
         const SizedBox(
@@ -233,7 +213,7 @@ class _MyOpinionState extends State<MyOpinion> {
         ),
         ListTile(
           title: const Text(
-            'estudio IDVRV',
+            'Estudio IDVRV',
             style: TextStyle(
               color: Color.fromARGB(250, 66, 25, 8),
               fontFamily: 'Sitka',
@@ -247,13 +227,13 @@ class _MyOpinionState extends State<MyOpinion> {
               setState(() {
                 groupValue = value!;
               });
-              group = 'Estudio IDVRV';
+              group = 'estudio IDVRV';
             },
           ),
         ),
         ListTile(
           title: const Text(
-            'no tengo conocimientos técnicos de Pogramación ni Diseño',
+            'No tengo conocimientos técnicos de Pogramación ni Diseño',
             style: TextStyle(
               color: Color.fromARGB(250, 66, 25, 8),
               fontFamily: 'Sitka',
@@ -268,7 +248,7 @@ class _MyOpinionState extends State<MyOpinion> {
                 groupValue = value!;
               });
               group =
-                  'No tengo conocimientos técnicos de Pogramación ni Diseño';
+                  'no tengo conocimientos técnicos de Pogramación ni Diseño';
             },
           ),
         ),

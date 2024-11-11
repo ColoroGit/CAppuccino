@@ -103,24 +103,24 @@ class DatabaseHelper {
       captions: captions,
     );
 
-    var rID = await db.insert(
+    r.id = await db.insert(
       "recepies",
       br.toMap(),
     );
 
     r.dateOfCreation.id = await db.insert(
       "dates",
-      br.dateOfCreation.toMap(rID),
+      br.dateOfCreation.toMap(r.id),
     );
 
-    r.dateOfCreation.recepieId = rID;
+    r.dateOfCreation.recepieId = r.id;
 
     r.captions[0].id = await db.insert(
       "captions",
-      br.mainCaption.toMap(rID),
+      br.mainCaption.toMap(r.id),
     );
 
-    r.captions[0].recepieId = rID;
+    r.captions[0].recepieId = r.id;
 
     return r;
   }
@@ -148,13 +148,21 @@ class DatabaseHelper {
       );
 
       for (var c in recepie.captions) {
-        await db.update(
-          "captions",
-          c.toMap(recepie.id),
-          where: "RecepieId = ?",
-          whereArgs: [recepie.id],
-          // conflictAlgorithm: ConflictAlgorithm.replace,
-        );
+        if (c.id == -1) {
+          await db.insert(
+            "captions",
+            c.toMap(recepie.id),
+          );
+        } else {
+          await db.update(
+            "captions",
+            c.toMap(recepie.id),
+            where: "RecepieId = ? AND id = ?",
+            /* && id == caption id????*/
+            whereArgs: [recepie.id, c.id],
+            // conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
       }
     } else {
       // ignore: avoid_print
@@ -235,23 +243,6 @@ class DatabaseHelper {
     }
     return recepies;
   }
-
-  // // fetch CAPTIONS of a particular RECEPIE **********
-  // Future<List<Caption>> fetchRecepieCaptions(int recepieId) async {
-  //   Database db = await instance.database;
-  //   List<Map<String, dynamic>> results = await db.query(
-  //     "captions",
-  //     where: "recepieId = ?",
-  //     whereArgs: [recepieId],
-  //   );
-
-  //   List<Caption> captions = [];
-  //   for (var res in results) {
-  //     Caption c = Caption.fromMap(res);
-  //     captions.add(c);
-  //   }
-  //   return captions;
-  // }
 
   // DELETE RECEPIE
   Future<int> deleteRecepie(Recepie r) async {

@@ -1,10 +1,12 @@
 import 'package:camera/camera.dart';
 import 'package:cappuccino/models/barista_recepie.dart';
+import 'package:cappuccino/models/recepie.dart';
 import 'package:cappuccino/pages/home.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/pages/my_recepies.dart';
 import 'package:cappuccino/utils/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBarista extends StatefulWidget {
   const MyBarista({super.key, required this.camera});
@@ -81,7 +83,7 @@ class _MyBaristaState extends State<MyBarista> {
                     Padding(
                       padding: EdgeInsets.only(right: 8.0),
                       child: Icon(
-                        Icons.settings,
+                        Icons.star,
                         color: Color.fromARGB(250, 66, 25, 8),
                       ),
                     ),
@@ -99,59 +101,57 @@ class _MyBaristaState extends State<MyBarista> {
       body: Center(
         child: ListView(children: getBaristaRecepiesBanners()),
       ),
-      persistentFooterButtons: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(250, 168, 93, 48),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              MyRecepies(camera: widget.camera)));
-                },
-                icon: Image.asset(
-                  'assets/images/Search.png',
-                  height: 35,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.home_filled,
-                  color: Color.fromARGB(250, 66, 25, 8),
-                  size: 40,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Home(
-                                camera: widget.camera,
-                              )));
-                },
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  'assets/images/Selected_CoffeeSchool.png',
-                  height: 35,
-                ),
-              ),
-            ],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(250, 168, 93, 48),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
           ),
         ),
-      ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MyRecepies(camera: widget.camera)));
+              },
+              icon: Image.asset(
+                'assets/images/Search.png',
+                height: 35,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.home_filled,
+                color: Color.fromARGB(250, 66, 25, 8),
+                size: 40,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Home(
+                              camera: widget.camera,
+                            )));
+              },
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Image.asset(
+                'assets/images/Selected_CoffeeSchool.png',
+                height: 35,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -270,8 +270,9 @@ class _MyBaristaState extends State<MyBarista> {
                     child: Column(
                       children: [
                         FloatingActionButton.small(
-                          onPressed: () {
-                            db.insertBRecepie(br[i]);
+                          onPressed: () async {
+                            Recepie r = await db.insertBRecepie(br[i]);
+                            arrangeRecentRecepies(r);
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => Dialog(
@@ -337,5 +338,23 @@ class _MyBaristaState extends State<MyBarista> {
     }
 
     return banners;
+  }
+
+  arrangeRecentRecepies(Recepie r) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (r.id == prefs.getInt("id0")) {
+      return;
+    }
+
+    if (r.id == prefs.getInt("id1")) {
+      prefs.setInt("id1", prefs.getInt("id0") as int);
+      prefs.setInt("id0", r.id);
+
+      return;
+    }
+
+    prefs.setInt("id2", prefs.getInt("id1") as int);
+    prefs.setInt("id1", prefs.getInt("id0") as int);
+    prefs.setInt("id0", r.id);
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:camera/camera.dart';
 import 'package:cappuccino/models/recepie.dart';
+import 'package:cappuccino/pages/edit_recepie.dart';
 import 'package:cappuccino/pages/my_barista.dart';
 import 'package:cappuccino/pages/my_opinion.dart';
 import 'package:cappuccino/pages/my_recepies.dart';
@@ -30,14 +33,10 @@ class _HomeState extends State<Home> {
     _loadSavedValue();
   }
 
-  // @override
-  // void deactivate() {
-  //   //update all recepies?
-  //   super.deactivate();
-  // }
-
   // Function to load saved value from SharedPreferences
   void _loadSavedValue() async {
+    if (!mounted) return;
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     recepies = [];
@@ -120,7 +119,7 @@ class _HomeState extends State<Home> {
                     Padding(
                       padding: EdgeInsets.only(right: 8.0),
                       child: Icon(
-                        Icons.settings,
+                        Icons.star,
                         color: Color.fromARGB(250, 66, 25, 8),
                       ),
                     ),
@@ -149,58 +148,56 @@ class _HomeState extends State<Home> {
                 children: getRecentRecepiesBanners(),
               ),
       ),
-      persistentFooterButtons: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(250, 168, 93, 48),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              MyRecepies(camera: widget.camera)));
-                },
-                icon: Image.asset(
-                  'assets/images/Search.png',
-                  height: 35,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.home_filled,
-                  color: Color.fromARGB(250, 236, 204, 180),
-                  size: 40,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              MyBarista(camera: widget.camera)));
-                },
-                icon: Image.asset(
-                  'assets/images/CoffeeSchool.png',
-                  height: 35,
-                ),
-              ),
-            ],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(250, 168, 93, 48),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
           ),
         ),
-      ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MyRecepies(camera: widget.camera)));
+              },
+              icon: Image.asset(
+                'assets/images/Search.png',
+                height: 35,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.home_filled,
+                color: Color.fromARGB(250, 236, 204, 180),
+                size: 40,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MyBarista(camera: widget.camera)));
+              },
+              icon: Image.asset(
+                'assets/images/CoffeeSchool.png',
+                height: 35,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -208,10 +205,15 @@ class _HomeState extends State<Home> {
     final banners = <Widget>[];
 
     for (int i = 0; i < recepies.length; i++) {
-      List<Image> imagesCarousel = List.empty(growable: true);
+      List<Image> imagesCarousel =
+          List.empty(growable: true); //Something's off here aswell
 
       for (int j = 0; j < recepies[i].captions.length; j++) {
-        imagesCarousel.add(Image.asset(recepies[i].captions[j].caption));
+        if (recepies[i].captions[j].caption.startsWith("assets")) {
+          imagesCarousel.add(Image.asset(recepies[i].captions[j].caption));
+        } else {
+          imagesCarousel.add(Image.file(File(recepies[i].captions[j].caption)));
+        }
       }
 
       banners.add(
@@ -390,7 +392,20 @@ class _HomeState extends State<Home> {
                                 child: const Icon(Icons.share),
                               ),
                               FloatingActionButton.small(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditRecepie(
+                                        camera: widget.camera,
+                                        recepie: recepies[i],
+                                        pScreen: "home",
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: const Icon(Icons.edit),
                               ),
                               FloatingActionButton.small(
@@ -412,8 +427,11 @@ class _HomeState extends State<Home> {
                                         ),
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
                                             const Text(
                                               "¿Segur@ que deseas eliminar\nesta receta?",
                                               textAlign: TextAlign.center,
@@ -425,9 +443,9 @@ class _HomeState extends State<Home> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                TextButton(
+                                                ElevatedButton(
                                                   onPressed: () async {
                                                     await db.deleteRecepie(
                                                         recepies[i]);
@@ -465,7 +483,7 @@ class _HomeState extends State<Home> {
                                                     ),
                                                   ),
                                                 ),
-                                                TextButton(
+                                                ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
@@ -512,7 +530,10 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Image.asset(recepies[i].captions[0].caption),
+                    leading:
+                        (recepies[i].captions[0].caption.startsWith("assets"))
+                            ? Image.asset(recepies[i].captions[0].caption)
+                            : Image.file(File(recepies[i].captions[0].caption)),
                     title: Text(
                       recepies[i].title,
                       style: const TextStyle(
