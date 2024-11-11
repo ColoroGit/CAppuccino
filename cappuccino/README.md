@@ -4,6 +4,8 @@ Proyecto creado por Tomás Concha
 
 # Prototipo Funcional (versión 2.0)
 
+Link al APK de instalación: https://drive.google.com/file/d/1wX-UHYKsM_8_VTU0MN-rSeMZA-_rS9A8/view?usp=sharing
+
 ## Descripción de la app
 
 A través de LIRCAYHUB se solicitó crear una aplicación donde se pueda obtener una alta variedad de recetas para preparar distintos tipos de cafés, con el objetivo de que los usuarios puedan aprender en base a sus preferencias, descubrir nuevas técnicas y compartir sus conocimientos. En esta actualización de la aplicación, se tomó en cuenta el feedback de ciertos usuarios con el fin de realizar cambios para satisfacer sus necesidades, y aprovechar la instancia para agregar nuevas funcionalidades sobre la maqueta realizada durante la versión anterior. 

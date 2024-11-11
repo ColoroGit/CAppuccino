@@ -144,7 +144,6 @@ class DatabaseHelper {
         recepie.dateOfCreation.toMap(recepie.id),
         where: "RecepieId = ?",
         whereArgs: [recepie.id],
-        // conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
       for (var c in recepie.captions) {
@@ -158,9 +157,7 @@ class DatabaseHelper {
             "captions",
             c.toMap(recepie.id),
             where: "RecepieId = ? AND id = ?",
-            /* && id == caption id????*/
             whereArgs: [recepie.id, c.id],
-            // conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
       }
@@ -171,29 +168,6 @@ class DatabaseHelper {
 
     return recepie;
   }
-
-  // // Inserting and updating a CAPTION ********** (consider just making a insert, we might not need to modify)
-  // Future<Caption> upsertCaption(Caption caption) async {
-  //   Database db = await instance.database;
-  //   var count = Sqflite.firstIntValue(await db
-  //       .rawQuery("SELECT COUNT(*) FROM captions WHERE id = ?", [caption.id]));
-
-  //   if (count == 0) {
-  //     await db.insert(
-  //       "captions",
-  //       caption.toMap(),
-  //       conflictAlgorithm: ConflictAlgorithm.replace,
-  //     );
-  //   } else {
-  //     await db.update(
-  //       "captions",
-  //       caption.toMap(),
-  //       where: "id = ?",
-  //       whereArgs: [caption.id],
-  //     );
-  //   }
-  //   return caption;
-  // }
 
   // fetch a single RECEPIE ***************
   Future<Recepie> fetchRecepie(int rID) async {
@@ -224,7 +198,8 @@ class DatabaseHelper {
   // fetch all RECEPIES ***********
   Future<List<Recepie>> fetchAllRecepies() async {
     Database db = await instance.database;
-    List<Map<String, dynamic>> results = await db.query("recepies");
+    List<Map<String, dynamic>> results =
+        await db.query("recepies", orderBy: "title ASC");
 
     List<Recepie> recepies = [];
     for (var res in results) {
