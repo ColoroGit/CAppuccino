@@ -4,7 +4,7 @@ Proyecto creado por Tomás Concha
 
 # Prototipo Funcional (versión 2.0)
 
-Link al APK de instalación: https://drive.google.com/file/d/1wX-UHYKsM_8_VTU0MN-rSeMZA-_rS9A8/view?usp=sharing
+Link al APK de instalación: https://drive.google.com/file/d/14GxDFLS-bYu8chVv5Pc9KraFqT1baS6V/view?usp=sharing
 
 ## Descripción de la app
 

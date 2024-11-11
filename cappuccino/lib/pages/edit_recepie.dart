@@ -156,9 +156,15 @@ class _EditRecepieState extends State<EditRecepie> {
                             keyboardType: TextInputType.number,
                             initialValue: r.timeOfPrep.toString(),
                             onChanged: (value) {
-                              setState(() {
-                                r.timeOfPrep = (value as double).round();
-                              });
+                              if (value == "") {
+                                setState(() {
+                                  r.timeOfPrep = 0;
+                                });
+                              } else {
+                                setState(() {
+                                  r.timeOfPrep = int.parse(value);
+                                });
+                              }
                             },
                           ),
                         ),
@@ -309,7 +315,6 @@ class _EditRecepieState extends State<EditRecepie> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Falta guardar las imágenes creadas
                       for (i in imagesPath) {
                         setState(() {
                           r.captions
