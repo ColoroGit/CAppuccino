@@ -35,9 +35,11 @@ Link al diagrama: https://drive.google.com/file/d/1M5EL8LI-lMLWUZCiubrwUtMhGWpzN
 
 ## Link al Video Explicativo
 
-A continuación, se adjunta un video grabado por Tomás Concha, que explica a grandes rasgos las funcionalidades de la aplicación, junto con mostrar las mismas en acción, y otros detalles sobre el desarrollo.
+A continuación, se adjunta un video grabado por Tomás Concha, junto con la presentación utilizada, que explica a grandes rasgos las funcionalidades de la aplicación, junto con mostrar las mismas en acción, y otros detalles sobre el desarrollo.
 
-Link al video: 
+Link a presentación: https://docs.google.com/presentation/d/1zxD6wIRqG4p9wTvKgpgO_Wi3ojUcDrJvY4588WeSxrs/edit?usp=sharing
+
+Link al video: https://drive.google.com/file/d/1GiGPpLXHlKqOhSRU9qzrRnif5cXwRDzR/view?usp=sharing
 
 
 
